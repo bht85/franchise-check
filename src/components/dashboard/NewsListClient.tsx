@@ -19,14 +19,10 @@ export default function NewsListClient({ news }: { news: NewsItem[] }) {
     <>
       <div className="flex flex-col gap-4">
         {news.map((item, idx) => (
-          <a
+          <button
             key={idx}
-            href={item.link}
-            onClick={(e) => {
-              e.preventDefault()
-              setSelectedUrl(item.link)
-            }}
-            className="group block p-3 -mx-3 rounded-xl hover:bg-[#F6F7F9] transition-colors cursor-pointer"
+            onClick={() => setSelectedUrl(item.link)}
+            className="group block p-3 -mx-3 rounded-xl hover:bg-[#F6F7F9] transition-colors cursor-pointer text-left w-full"
           >
             <h4 className="text-sm font-semibold text-[#171A1F] leading-snug mb-1.5 group-hover:text-indigo-600 line-clamp-2">
               {item.title}
@@ -40,7 +36,7 @@ export default function NewsListClient({ news }: { news: NewsItem[] }) {
                 })}
               </span>
             </div>
-          </a>
+          </button>
         ))}
       </div>
 
