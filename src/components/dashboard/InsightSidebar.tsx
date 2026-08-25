@@ -9,6 +9,37 @@ interface NewsItem {
   source: string
 }
 
+function getCleanTitle(title: string): string {
+  const lastDashIndex = title.lastIndexOf(' - ')
+  return lastDashIndex > -1 ? title.substring(0, lastDashIndex).trim() : title.trim()
+}
+
+function isDuplicate(title: string, existingTitles: string[]): boolean {
+  const cleanTitle = getCleanTitle(title)
+  
+  for (const existing of existingTitles) {
+    const cleanExisting = getCleanTitle(existing)
+    
+    // 1. 완전히 같은 제목인 경우
+    if (cleanTitle === cleanExisting) return true
+    
+    // 2. 단어 유사도 검사 (핵심 단어 70% 이상 겹치면 중복 처리)
+    const words1 = cleanTitle.split(/\s+/).filter(w => w.length > 1)
+    const words2 = cleanExisting.split(/\s+/).filter(w => w.length > 1)
+    
+    let matchCount = 0
+    for (const w of words1) {
+      if (words2.includes(w)) matchCount++
+    }
+    
+    const minLength = Math.min(words1.length, words2.length)
+    if (minLength > 3 && matchCount / minLength >= 0.7) {
+      return true
+    }
+  }
+  return false
+}
+
 async function getLatestNews(): Promise<NewsItem[]> {
   try {
     const res = await fetch(
@@ -22,13 +53,24 @@ async function getLatestNews(): Promise<NewsItem[]> {
     const jObj = parser.parse(xml)
     const items = jObj?.rss?.channel?.item || []
     
-    // 최대 4개 가져오기
-    return items.slice(0, 4).map((item: any) => ({
-      title: item.title,
-      link: item.link,
-      pubDate: item.pubDate,
-      source: item.source || 'Google 뉴스',
-    }))
+    const result: NewsItem[] = []
+    const existingTitles: string[] = []
+
+    for (const item of items) {
+      if (result.length >= 4) break // 4개 찰 때까지 반복
+      
+      const title = item.title || ''
+      if (!isDuplicate(title, existingTitles)) {
+        existingTitles.push(title)
+        result.push({
+          title,
+          link: item.link,
+          pubDate: item.pubDate,
+          source: item.source || 'Google 뉴스',
+        })
+      }
+    }
+    return result
   } catch (error) {
     console.error('Failed to fetch news:', error)
     return []
