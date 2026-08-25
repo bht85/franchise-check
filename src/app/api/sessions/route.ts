@@ -34,6 +34,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '브랜드명과 본사명은 필수입니다.' }, { status: 400 })
   }
 
+  // ── [무료 버전 3개 제한 로직] ──
+  const { data: userSessions, error: countError } = await supabase
+    .from('brand_sessions')
+    .select('is_premium')
+    .eq('user_id', userId)
+
+  if (countError) {
+    return NextResponse.json({ error: countError.message }, { status: 500 })
+  }
+
+  const isPremium = userSessions.some(s => s.is_premium)
+  if (!isPremium && userSessions.length >= 3) {
+    return NextResponse.json({ error: '무료 버전에서는 최대 3개까지만 검증을 진행할 수 있습니다.' }, { status: 403 })
+  }
+  // ──────────────────────────────
+
   // 브랜드 조회 또는 생성
   let brandId: string
   const { data: existingBrand } = await supabase

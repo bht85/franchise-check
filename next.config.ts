@@ -5,9 +5,11 @@ const nextConfig: NextConfig = {
   turbopack: {},
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000'],
+      allowedOrigins: ['localhost:3001', 'fc-check.shop', 'www.fc-check.shop'],
     },
   },
+  // Allow Cloudflare tunnel hostnames for dev mode
+  allowedDevOrigins: ['fc-check.shop', 'www.fc-check.shop'],
 }
 
 export default nextConfig

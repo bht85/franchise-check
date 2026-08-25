@@ -9,13 +9,15 @@ export async function POST(req: NextRequest) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
   const supabase = await createSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
   const body = await req.json()
   const { document_id } = body
 
   if (!document_id) {
     return NextResponse.json({ error: 'document_id 필수' }, { status: 400 })
   }
+
 
   // 문서 조회
   const { data: doc, error: docError } = await supabase

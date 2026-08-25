@@ -54,6 +54,9 @@ export async function POST(req: NextRequest) {
   // userSituation 추출
   const userSituation = {
     own_capital: Number(answersByKeyMap['own_capital']?.answer_value || 0),
+    use_loan: String(answersByKeyMap['use_loan']?.answer_value || ''),
+    has_experience: answersByKeyMap['has_experience']?.answer_value === 'true',
+    operation_style: String(answersByKeyMap['operation_style']?.answer_value || ''),
     monthly_loan_payment: Number(answersByKeyMap['monthly_loan_payment']?.answer_value || 0),
     monthly_living_cost: Number(answersByKeyMap['monthly_living_cost']?.answer_value || 0),
     target_monthly_profit: Number(answersByKeyMap['target_monthly_profit']?.answer_value || 0),

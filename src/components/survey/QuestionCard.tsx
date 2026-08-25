@@ -1,9 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { Question, QuestionAnswer, AnswerState, SourceType } from '@/types'
 import { cn } from '@/lib/utils'
-import { ChevronDown, ChevronUp, HelpCircle, ExternalLink } from 'lucide-react'
+import { HelpCircle, ExternalLink, ArrowRight } from 'lucide-react'
+import { SelectableCard } from '@/components/ui/SelectableCard'
+import { AmountField } from '@/components/ui/AmountField'
+import { ProgressChapter } from '@/components/ui/ProgressChapter'
 
 interface QuestionCardProps {
   question: Question
@@ -16,94 +19,7 @@ interface QuestionCardProps {
   progress: { current: number; total: number; percentage: number; stepLabel: string }
 }
 
-// ── 금액 입력 컴포넌트 ───────────────────────────────────
-
-function AmountInput({
-  value,
-  onChange,
-}: {
-  value: string
-  onChange: (v: string) => void
-}) {
-  const formatted = value
-    ? Number(value.replace(/[^0-9]/g, '')).toLocaleString()
-    : ''
-
-  return (
-    <div className="relative">
-      <input
-        type="text"
-        inputMode="numeric"
-        className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 text-lg font-semibold text-right pr-14 focus:border-blue-500 focus:outline-none transition-colors"
-        placeholder="0"
-        value={formatted}
-        onChange={(e) => {
-          const raw = e.target.value.replace(/[^0-9]/g, '')
-          onChange(raw)
-        }}
-      />
-      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">
-        원
-      </span>
-    </div>
-  )
-}
-
-// ── 선택형 입력 ────────────────────────────────────────
-
-function SelectInput({
-  question,
-  value,
-  onChange,
-}: {
-  question: Question
-  value: string
-  onChange: (v: string) => void
-}) {
-  return (
-    <div className="space-y-2">
-      {question.options?.map((opt) => (
-        <button
-          key={opt.option_key}
-          onClick={() => onChange(opt.option_key)}
-          className={cn(
-            'w-full text-left border-2 rounded-xl px-4 py-3.5 text-sm font-medium transition-all',
-            value === opt.option_key
-              ? 'border-blue-500 bg-blue-50 text-blue-700'
-              : 'border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
-          )}
-        >
-          {opt.option_text}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-// ── 텍스트 입력 ────────────────────────────────────────
-
-function TextInput({
-  value,
-  onChange,
-  placeholder = '금액, 비율 또는 내용을 자유롭게 적어주세요',
-}: {
-  value: string
-  onChange: (v: string) => void
-  placeholder?: string
-}) {
-  return (
-    <input
-      type="text"
-      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 text-lg font-medium focus:border-blue-500 focus:outline-none transition-colors"
-      placeholder={placeholder}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  )
-}
-
 // ── 답변 상태 선택기 ────────────────────────────────────
-
 function AnswerStateSelector({
   state,
   onChange,
@@ -111,27 +27,23 @@ function AnswerStateSelector({
   state: AnswerState
   onChange: (s: AnswerState) => void
 }) {
-  const options: Array<{ value: AnswerState; label: string; color: string }> = [
-    { value: 'confirmed', label: '확인함', color: 'green' },
-    { value: 'not_checked', label: '확인 안 함', color: 'gray' },
-    { value: 'unknown', label: '모름', color: 'orange' },
+  const options: Array<{ value: AnswerState; label: string; active: string }> = [
+    { value: 'confirmed', label: '확인함', active: 'border-green-500 bg-green-50 text-green-700' },
+    { value: 'unknown', label: '모름', active: 'border-amber-500 bg-amber-50 text-amber-700' },
+    { value: 'not_checked', label: '확인 안 함', active: 'border-[#E5E7EB] bg-gray-100 text-[#737983]' },
   ]
 
   return (
-    <div className="flex gap-2 mt-4">
+    <div className="flex gap-2 mt-5">
       {options.map((opt) => (
         <button
           key={opt.value}
           onClick={() => onChange(opt.value)}
           className={cn(
-            'flex-1 text-xs font-medium py-2 rounded-lg border-2 transition-all',
+            'flex-1 text-xs font-medium py-2 rounded-full border transition-all',
             state === opt.value
-              ? opt.value === 'confirmed'
-                ? 'border-green-500 bg-green-50 text-green-700'
-                : opt.value === 'unknown'
-                ? 'border-orange-500 bg-orange-50 text-orange-700'
-                : 'border-gray-400 bg-gray-100 text-gray-700'
-              : 'border-gray-200 text-gray-500 hover:border-gray-300'
+              ? opt.active
+              : 'border-[#E5E7EB] text-[#737983] hover:border-gray-300'
           )}
         >
           {opt.label}
@@ -164,7 +76,6 @@ export default function QuestionCard({
   hasNext,
   progress,
 }: QuestionCardProps) {
-  const [showWhy, setShowWhy] = useState(true)
   const [localValue, setLocalValue] = useState<string>(
     currentAnswer?.answer_value != null
       ? String(currentAnswer.answer_value)
@@ -173,6 +84,20 @@ export default function QuestionCard({
   const [localState, setLocalState] = useState<AnswerState>(
     currentAnswer?.answer_state ?? 'not_checked'
   )
+
+  // Enter 키로 다음 이동
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && e.target instanceof HTMLInputElement === false) {
+        onNext()
+      }
+      if (e.key === 'Enter' && question.answer_type !== 'select') {
+        onNext()
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [onNext, question.answer_type])
 
   const handleValueChange = (v: string) => {
     setLocalValue(v)
@@ -192,113 +117,112 @@ export default function QuestionCard({
     onAnswer(v, 'confirmed')
   }
 
+  const isAnswered = localState === 'confirmed' || (localValue && localValue.length > 0)
+
   return (
-    <div className="min-h-screen flex flex-col bg-white max-w-lg mx-auto">
+    <div className="min-h-screen flex flex-col bg-[#F6F7F9]">
       {/* 상단: 진행률 */}
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-gray-400 font-medium">{progress.stepLabel}</span>
-          <span className="text-xs text-gray-400">
-            {progress.current} / {progress.total}
-          </span>
-        </div>
-        <div className="w-full bg-gray-100 rounded-full h-1.5">
-          <div
-            className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
-            style={{ width: `${progress.percentage}%` }}
-          />
-        </div>
-      </div>
+      <ProgressChapter
+        current={progress.current}
+        total={progress.total}
+        percentage={progress.percentage}
+        stepLabel={progress.stepLabel}
+      />
 
-      {/* 질문 영역 */}
-      <div className="flex-1 px-4 py-6 question-card-enter">
-        {/* 카테고리 태그 */}
-        <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-          {progress.stepLabel}
-        </span>
+      {/* 중앙: 질문 카드 */}
+      <div className="flex-1 flex items-start justify-center px-4 py-8 md:py-14">
+        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-sm border border-[#E5E7EB] p-8 md:p-12">
+          {/* 질문 텍스트 */}
+          <h2 className="text-2xl md:text-3xl font-bold text-[#171A1F] leading-snug mb-8 mt-2">
+            {question.question_text}
+          </h2>
 
-        {/* 질문 텍스트 */}
-        <h2 className="text-xl font-bold text-gray-900 mt-3 mb-5 leading-snug">
-          {question.question_text}
-        </h2>
-
-        {/* 답변 입력 */}
-        <div className="mb-4">
-          {question.answer_type === 'amount' && (
-            <>
-              <AmountInput value={localValue} onChange={handleValueChange} />
-              <AnswerStateSelector state={localState} onChange={handleStateChange} />
-            </>
-          )}
-          {question.answer_type === 'select' && (
-            <SelectInput
-              question={question}
-              value={localValue}
-              onChange={handleSelectChange}
-            />
-          )}
-          {question.answer_type === 'text' && (
-            <>
-              <TextInput value={localValue} onChange={handleValueChange} />
-              <AnswerStateSelector state={localState} onChange={handleStateChange} />
-            </>
-          )}
-        </div>
-
-        {/* "왜 중요한가요?" */}
-        {question.description && (
-          <div className="mt-4">
-            <button
-              onClick={() => setShowWhy(!showWhy)}
-              className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <HelpCircle size={14} />
-              이 질문은 왜 중요한가요?
-              {showWhy ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </button>
-            {showWhy && (
-              <div className="mt-2 bg-blue-50 rounded-lg px-4 py-3 text-sm text-blue-700 leading-relaxed">
-                {question.description}
+          {/* 답변 입력 영역 */}
+          <div className="mb-6">
+            {question.answer_type === 'amount' && (
+              <>
+                <AmountField value={localValue} onChange={handleValueChange} />
+                <AnswerStateSelector state={localState} onChange={handleStateChange} />
+              </>
+            )}
+            {question.answer_type === 'select' && (
+              <div className="space-y-3">
+                {question.options?.map((opt) => (
+                  <SelectableCard
+                    key={opt.option_key}
+                    option_key={opt.option_key}
+                    option_text={opt.option_text}
+                    selected={localValue === opt.option_key}
+                    onClick={() => handleSelectChange(opt.option_key)}
+                  />
+                ))}
               </div>
             )}
+            {question.answer_type === 'text' && (
+              <>
+                <div className="border-b-2 border-[#E5E7EB] focus-within:border-indigo-500 transition-colors pb-3">
+                  <input
+                    type="text"
+                    className="w-full text-xl font-semibold text-[#171A1F] bg-transparent border-0 outline-none placeholder:text-[#E5E7EB]"
+                    placeholder="금액, 비율 또는 내용을 자유롭게 적어주세요"
+                    value={localValue}
+                    onChange={(e) => handleValueChange(e.target.value)}
+                  />
+                </div>
+                <AnswerStateSelector state={localState} onChange={handleStateChange} />
+              </>
+            )}
           </div>
-        )}
 
-        {/* 필수 항목 표시 */}
-        {!question.is_required && (
-          <p className="text-xs text-gray-400 mt-3">* 선택 항목입니다. 모르면 건너뛸 수 있습니다.</p>
-        )}
+          {/* 선택 항목 표시 */}
+          {!question.is_required && (
+            <p className="text-xs text-[#737983] mb-5">
+              선택 항목 — 모르면 건너뛰어도 됩니다
+            </p>
+          )}
 
-        {/* 상황에 맞는 외부 링크 띄우기 */}
-        {CONTEXTUAL_LINKS[question.question_key] && (
-          <div className="mt-6 pt-5 border-t border-gray-100">
-            <a
-              href={CONTEXTUAL_LINKS[question.question_key].url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="flex items-center justify-between bg-white border border-gray-200 hover:border-blue-400 p-4 rounded-xl shadow-sm hover:shadow-md transition-all group"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="text-xs text-blue-600 font-bold tracking-tight">공식 데이터 확인하기</span>
-                <span className="text-sm font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-                  {CONTEXTUAL_LINKS[question.question_key].title}
-                </span>
+          {/* 왜 중요한가요? (항상 표시) */}
+          {question.description && (
+            <div className="mt-8 bg-indigo-50/50 border border-indigo-100 rounded-2xl p-5">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-600 mb-2">
+                <HelpCircle size={14} />
+                왜 확인해야 하나요?
               </div>
-              <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
-                <ExternalLink size={14} />
+              <div className="text-sm text-[#737983] leading-relaxed">
+                {question.description}
               </div>
-            </a>
-          </div>
-        )}
+            </div>
+          )}
+
+          {/* 상황에 맞는 외부 링크 */}
+          {CONTEXTUAL_LINKS[question.question_key] && (
+            <div className="mt-6 pt-6 border-t border-[#E5E7EB]">
+              <a
+                href={CONTEXTUAL_LINKS[question.question_key].url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center justify-between bg-indigo-50 hover:bg-indigo-100 px-5 py-4 rounded-2xl transition-colors group"
+              >
+                <div>
+                  <span className="text-xs font-semibold text-indigo-400 block mb-0.5">공식 확인처</span>
+                  <span className="text-sm font-semibold text-indigo-700 group-hover:text-indigo-800">
+                    {CONTEXTUAL_LINKS[question.question_key].title}
+                  </span>
+                </div>
+                <ExternalLink size={16} className="text-indigo-400 shrink-0" />
+              </a>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 하단 네비게이션 */}
-      <div className="sticky bottom-0 bg-white border-t border-gray-100 px-4 py-4 safe-area-bottom">
-        <div className="flex gap-3">
+      <div className="sticky bottom-0 bg-white border-t border-[#E5E7EB]">
+        <div className="max-w-2xl mx-auto px-6 py-4 flex gap-3 items-center">
           {hasPrevious && (
             <button
               onClick={onPrevious}
-              className="flex-none border-2 border-gray-200 text-gray-600 font-medium py-3.5 px-5 rounded-xl hover:border-gray-300 transition-colors"
+              className="border-2 border-[#E5E7EB] text-[#737983] font-medium py-3.5 px-6 rounded-2xl hover:border-indigo-300 hover:text-indigo-600 transition-all"
             >
               이전
             </button>
@@ -306,14 +230,18 @@ export default function QuestionCard({
           <button
             onClick={onNext}
             className={cn(
-              'flex-1 font-semibold py-3.5 rounded-xl transition-colors text-base',
-              localState === 'confirmed' || localValue
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+              'flex-1 font-semibold py-3.5 rounded-2xl transition-all text-base flex items-center justify-center gap-2',
+              isAnswered
+                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                : 'bg-[#E5E7EB] text-[#737983] hover:bg-gray-200'
             )}
           >
             {hasNext ? '다음' : '완료'}
+            <ArrowRight size={18} />
           </button>
+          <span className="hidden md:block text-xs text-[#737983] shrink-0">
+            Enter ↵
+          </span>
         </div>
       </div>
     </div>

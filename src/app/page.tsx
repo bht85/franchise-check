@@ -5,98 +5,99 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* 헤더 */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 py-3">
-        <div className="max-w-lg mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900 text-lg">가맹검증</span>
-          <Link
-            href="/login"
-            className="text-sm text-blue-600 font-medium hover:text-blue-700"
-          >
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB] px-6 py-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-[#171A1F] text-lg">가맹검증</span>
+            <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">베타</span>
+          </div>
+          <Link href="/login" className="text-sm text-[#737983] hover:text-[#171A1F] transition-colors">
             로그인
           </Link>
         </div>
       </header>
 
-      {/* 히어로 섹션 */}
-      <section className="px-4 pt-12 pb-10 max-w-lg mx-auto text-center">
-        <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-xs font-medium mb-6">
-          <Shield size={12} />
-          무료 서비스 · 광고 없음
+      {/* 히어로 */}
+      <section className="max-w-5xl mx-auto px-6 pt-20 pb-20 text-center">
+        <div className="inline-flex items-center gap-2 bg-[#F6F7F9] border border-[#E5E7EB] text-[#737983] rounded-full px-4 py-2 text-sm mb-10">
+          <Shield size={14} />
+          프랜차이즈 계약 전 체크업 서비스
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 leading-tight mb-4">
-          프랜차이즈 계약 전에,
+        <h1 className="text-5xl md:text-6xl font-black text-[#171A1F] leading-tight mb-6 tracking-tight">
+          계약하기 전에,
           <br />
-          <span className="text-blue-600">딱 이것만 확인하세요.</span>
+          <span className="text-indigo-600">한 번만 더 확인하세요.</span>
         </h1>
 
-        <p className="text-gray-500 text-base leading-relaxed mb-8">
-          본사가 말한 내용과 실제 확인한 내용을
+        <p className="text-xl text-[#737983] mb-10 max-w-xl mx-auto leading-relaxed">
+          본사가 말한 것과 실제 확인한 것을 비교합니다.
           <br />
-          하나씩 비교해 봅니다.
+          미확인 항목과 의심 포인트를 정리해드립니다.
         </p>
 
-        <Link
-          href="/session/new"
-          className="block w-full bg-blue-600 text-white text-base font-semibold py-4 rounded-xl hover:bg-blue-700 transition-colors"
-        >
-          무료로 내 창업 리스크 확인하기
-          <ArrowRight className="inline ml-2 mb-0.5" size={18} />
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/session/new"
+            className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-indigo-700 transition-colors"
+          >
+            가맹계약 체크 시작하기
+            <ArrowRight size={20} />
+          </Link>
+          <Link
+            href="#how-it-works"
+            className="inline-flex items-center justify-center bg-[#F6F7F9] text-[#737983] px-8 py-4 rounded-2xl font-medium text-lg hover:bg-[#E5E7EB] transition-colors"
+          >
+            서비스 소개 보기
+          </Link>
+        </div>
 
-        <Link
-          href="#how-it-works"
-          className="block w-full mt-3 bg-gray-50 text-gray-600 text-base font-medium py-4 rounded-xl hover:bg-gray-100 transition-colors"
-        >
-          어떤 서비스인가요?
-        </Link>
-
-        <p className="text-xs text-gray-400 mt-4">
-          이 서비스는 법률 자문이 아닙니다. 현재 입력된 정보 기준으로만 분석합니다.
+        <p className="text-xs text-[#737983] mt-6">
+          법률 자문이 아닙니다. 입력된 정보 기준으로만 분석합니다.
         </p>
       </section>
 
-      {/* 핵심 메시지 */}
-      <section className="bg-gray-50 px-4 py-10">
-        <div className="max-w-lg mx-auto">
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-6 text-center">
+      {/* 이 서비스가 하는 것 */}
+      <section className="bg-[#F6F7F9] py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-semibold text-[#737983] uppercase tracking-wider mb-12 text-center">
             이 서비스가 하는 것
-          </h2>
-          <div className="space-y-4">
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                icon: <FileSearch className="text-blue-500 shrink-0" size={20} />,
+                icon: <FileSearch size={24} className="text-indigo-600" />,
                 title: '질문 하나씩, 쉬운 말로',
                 desc: '어려운 법률 문서를 공부하지 않아도 됩니다. 질문에 답하는 것만으로 무엇을 확인했고 무엇이 빠졌는지 파악합니다.',
               },
               {
-                icon: <AlertTriangle className="text-orange-500 shrink-0" size={20} />,
-                title: '불일치 자동 탐지',
+                icon: <AlertTriangle size={24} className="text-amber-500" />,
+                title: '정보 불일치 자동 감지',
                 desc: '본사 설명과 정보공개서 수치가 다르면 즉시 알려줍니다. "허위다"가 아닌 "차이가 있으니 확인하세요"로 표현합니다.',
               },
               {
-                icon: <CheckCircle2 className="text-green-500 shrink-0" size={20} />,
+                icon: <CheckCircle2 size={24} className="text-green-500" />,
                 title: '본사에 물어볼 질문 자동 생성',
                 desc: '미확인 항목과 불일치 내용을 바탕으로, 본사에 다시 확인해야 할 질문을 자동으로 만들어 줍니다.',
               },
             ].map((item, i) => (
-              <div key={i} className="flex gap-3 bg-white rounded-xl p-4 shadow-sm">
-                <div className="mt-0.5">{item.icon}</div>
-                <div>
-                  <p className="font-semibold text-gray-900 text-sm mb-1">{item.title}</p>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              <div key={i} className="bg-white rounded-2xl p-8 border border-[#E5E7EB]">
+                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center mb-5">
+                  {item.icon}
                 </div>
+                <p className="font-semibold text-[#171A1F] text-lg mb-3">{item.title}</p>
+                <p className="text-[#737983] text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 서비스 아님 명확화 */}
-      <section className="px-4 py-10 max-w-lg mx-auto">
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-          <p className="text-amber-800 font-semibold text-sm mb-2">이 서비스가 하지 않는 것</p>
-          <ul className="text-amber-700 text-sm space-y-1">
+      {/* 이 서비스가 하지 않는 것 */}
+      <section className="py-14 px-6">
+        <div className="max-w-2xl mx-auto bg-amber-50 border border-amber-100 rounded-3xl p-8">
+          <p className="text-amber-800 font-semibold mb-3">이 서비스가 하지 않는 것</p>
+          <ul className="text-amber-700 text-sm space-y-2">
             <li>✗ "이 프랜차이즈는 좋은 브랜드입니다" 같은 추천</li>
             <li>✗ 법적 자문 또는 위법 판단</li>
             <li>✗ 본사 광고나 브랜드 홍보</li>
@@ -105,11 +106,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 진행 구조 */}
-      <section id="how-it-works" className="bg-gray-50 px-4 py-10">
-        <div className="max-w-lg mx-auto">
-          <h2 className="font-bold text-gray-900 text-xl mb-6 text-center">어떻게 진행되나요?</h2>
-          <div className="space-y-3">
+      {/* 어떻게 진행되나요 */}
+      <section id="how-it-works" className="bg-[#F6F7F9] py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#171A1F] mb-14 text-center">어떻게 진행되나요?</h2>
+          <div className="max-w-lg mx-auto space-y-0">
             {[
               { step: 1, label: '나의 창업 상황', desc: '자기자본, 대출 계획, 운영 방식' },
               { step: 2, label: '관심 프랜차이즈', desc: '브랜드명, 상담일, 담당자' },
@@ -119,15 +120,18 @@ export default function LandingPage() {
               { step: 6, label: '계약조건 확인', desc: '기간, 해지, 영업지역, 로열티' },
               { step: 7, label: '실제 점주 확인', desc: '점주와 대화한 내용 기록' },
               { step: 8, label: '문서 업로드', desc: '정보공개서, 계약서 PDF' },
-              { step: 12, label: '최종 리포트', desc: '미확인 항목, 불일치, 본사 질문' },
-            ].map((item) => (
-              <div key={item.step} className="flex gap-3 items-start">
-                <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
-                  {item.step}
+              { step: 9, label: '최종 리포트', desc: '미확인 항목, 불일치, 본사 질문' },
+            ].map((item, idx, arr) => (
+              <div key={item.step} className="flex gap-5 items-start">
+                <div className="flex flex-col items-center shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">
+                    {item.step}
+                  </div>
+                  {idx < arr.length - 1 && <div className="w-px h-10 bg-indigo-100 my-1" />}
                 </div>
-                <div>
-                  <span className="font-medium text-gray-900 text-sm">{item.label}</span>
-                  <span className="text-gray-400 text-sm ml-2">{item.desc}</span>
+                <div className="pb-6">
+                  <span className="font-semibold text-[#171A1F] text-sm">{item.label}</span>
+                  <span className="text-[#737983] text-sm ml-2">{item.desc}</span>
                 </div>
               </div>
             ))}
@@ -135,26 +139,28 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 최하단 CTA */}
-      <section className="px-4 py-12 max-w-lg mx-auto text-center">
-        <h2 className="font-bold text-gray-900 text-2xl mb-3">
-          이 브랜드가 좋은지 판단하기 전에,
-        </h2>
-        <p className="text-gray-500 mb-8">
-          내가 충분히 확인했는지부터 확인하세요.
-        </p>
-        <Link
-          href="/session/new"
-          className="block w-full bg-blue-600 text-white text-base font-semibold py-4 rounded-xl hover:bg-blue-700 transition-colors"
-        >
-          지금 시작하기 — 무료
-          <ArrowRight className="inline ml-2 mb-0.5" size={18} />
-        </Link>
+      {/* 하단 CTA */}
+      <section className="bg-[#171A1F] py-20 px-6 text-center">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-3">
+            이 브랜드가 좋은지 판단하기 전에,
+          </h2>
+          <p className="text-xl text-gray-400 mb-10">
+            내가 충분히 확인했는지부터 확인하세요.
+          </p>
+          <Link
+            href="/session/new"
+            className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-indigo-500 transition-colors"
+          >
+            지금 시작하기 — 무료
+            <ArrowRight size={20} />
+          </Link>
+        </div>
       </section>
 
       {/* 푸터 */}
-      <footer className="border-t border-gray-100 px-4 py-6 text-center">
-        <p className="text-xs text-gray-400">
+      <footer className="border-t border-[#E5E7EB] py-8 px-6 text-center">
+        <p className="text-xs text-[#737983]">
           가맹검증은 법률 자문 서비스가 아닙니다. 모든 분석은 사용자가 입력한 정보 기준입니다.
           <br />
           계약 전 전문가(가맹거래사, 변호사)의 검토를 권장합니다.

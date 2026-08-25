@@ -14,11 +14,12 @@ interface Props {
 
 export default async function SharedReportPage({ params }: Props) {
   const supabase = await createSupabaseServerClient()
+  const { shareToken } = await params
 
   const { data: report } = await supabase
     .from('reports')
     .select('*')
-    .eq('share_token', params.shareToken)
+    .eq('share_token', shareToken)
     .single()
 
   if (!report) notFound()
