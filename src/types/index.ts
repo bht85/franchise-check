@@ -162,6 +162,7 @@ export interface BrandSession {
   completion_pct: number
   created_at: string
   updated_at: string
+  is_premium?: boolean
   brand?: Brand
 }
 

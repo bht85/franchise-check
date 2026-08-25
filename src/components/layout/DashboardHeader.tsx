@@ -31,14 +31,14 @@ export default function DashboardHeader({ sessionCount = 0, isPremium = false }:
           {isLimitReached ? (
             <Link
               href="/pricing"
-              className="flex items-center gap-1.5 text-sm font-semibold text-white bg-indigo-300 hover:bg-indigo-400 transition-colors px-4 py-2 rounded-xl"
+              className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-white bg-indigo-300 hover:bg-indigo-400 transition-colors px-4 py-2 rounded-xl"
             >
               <Lock size={14} />제한됨 (3/3)
             </Link>
           ) : (
             <Link
               href="/session/new"
-              className="flex items-center gap-1.5 text-sm font-semibold text-white bg-indigo-600 px-4 py-2 rounded-xl hover:bg-indigo-700 transition-colors"
+              className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-white bg-indigo-600 px-4 py-2 rounded-xl hover:bg-indigo-700 transition-colors"
             >
               <Plus size={14} />새 검증
             </Link>
