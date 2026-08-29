@@ -155,10 +155,7 @@ export default function QuestionCard({
           {/* 답변 입력 영역 */}
           <div className="mb-6">
             {question.answer_type === 'amount' && (
-              <>
-                <AmountField value={localValue} onChange={handleValueChange} />
-                <AnswerStateSelector state={localState} onChange={handleStateChange} />
-              </>
+              <AmountField value={localValue} onChange={handleValueChange} />
             )}
             {question.answer_type === 'select' && (
               <div className="space-y-3">
@@ -171,21 +168,19 @@ export default function QuestionCard({
                     onClick={() => handleSelectChange(opt.option_key)}
                   />
                 ))}
+                <AnswerStateSelector state={localState} onChange={handleStateChange} />
               </div>
             )}
             {question.answer_type === 'text' && (
-              <>
-                <div className="border-b-2 border-[#E5E7EB] focus-within:border-indigo-500 transition-colors pb-3">
-                  <input
-                    type="text"
-                    className="w-full text-xl font-semibold text-[#171A1F] bg-transparent border-0 outline-none placeholder:text-[#E5E7EB]"
-                    placeholder="금액, 비율 또는 내용을 자유롭게 적어주세요"
-                    value={localValue}
-                    onChange={(e) => handleValueChange(e.target.value)}
-                  />
-                </div>
-                <AnswerStateSelector state={localState} onChange={handleStateChange} />
-              </>
+              <div className="border-b-2 border-[#E5E7EB] focus-within:border-indigo-500 transition-colors pb-3">
+                <input
+                  type="text"
+                  className="w-full text-xl font-semibold text-[#171A1F] bg-transparent border-0 outline-none placeholder:text-[#E5E7EB]"
+                  placeholder="금액, 비율 또는 내용을 자유롭게 적어주세요"
+                  value={localValue}
+                  onChange={(e) => handleValueChange(e.target.value)}
+                />
+              </div>
             )}
           </div>
 
