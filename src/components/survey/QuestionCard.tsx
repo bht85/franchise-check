@@ -121,7 +121,7 @@ export default function QuestionCard({
                 key={i} 
                 className={i > 0 ? "block text-base font-medium text-red-500 mt-2" : ""}
               >
-                {line}
+                {i === 0 ? `Q${progress.current}. ${line}` : line}
               </span>
             ))}
           </h2>
