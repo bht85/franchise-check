@@ -52,19 +52,27 @@ export default function QuestionCard({
   )
   const [hasInteracted, setHasInteracted] = useState(false)
 
+  // 다음으로 넘어가기 전 스킵 처리
+  const handleNextClick = () => {
+    if (!hasInteracted && currentAnswer === undefined) {
+      onAnswer(null, 'not_checked')
+    }
+    onNext()
+  }
+
   // Enter 키로 다음 이동
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && e.target instanceof HTMLInputElement === false) {
-        onNext()
+        handleNextClick()
       }
       if (e.key === 'Enter' && question.answer_type !== 'select') {
-        onNext()
+        handleNextClick()
       }
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [onNext, question.answer_type])
+  }, [hasInteracted, currentAnswer, question.answer_type, onAnswer, onNext])
 
   const handleValueChange = (v: string) => {
     setHasInteracted(true)
@@ -200,7 +208,7 @@ export default function QuestionCard({
             </button>
           )}
           <button
-            onClick={onNext}
+            onClick={handleNextClick}
             className={cn(
               'flex-1 font-semibold py-3.5 rounded-2xl transition-all text-base flex items-center justify-center gap-2',
               isAnswered

@@ -79,7 +79,7 @@ export default function CategoryHubClient({
 
       const answeredCount = questions.filter((q) => {
         const a = answersMap[q.id]
-        return a && (a.answer_state === 'confirmed' || a.answer_state === 'unknown')
+        return a !== undefined
       }).length
 
       const completionPct = totalCount > 0 ? Math.round((answeredCount / totalCount) * 100) : 0
@@ -209,7 +209,7 @@ export default function CategoryHubClient({
         {/* ── 카테고리 카드 그리드 ─────────────────────────── */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {categoryStats.map((cat) => {
-            const scoreInfo = cat.completionPct > 0 ? getScoreLabel(cat.score) : null
+            const scoreInfo = cat.answeredCount > 0 ? getScoreLabel(cat.score) : null
 
             return (
               <div
@@ -224,7 +224,7 @@ export default function CategoryHubClient({
                   {cat.completionPct === 100 && (
                     <span className="bg-green-50 border border-green-200 text-green-700
                                      text-[11px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1 text-right">
-                      ✅ 완료 {scoreInfo ? `· ${scoreInfo.label}` : ''}
+                      ✅ 완료
                     </span>
                   )}
                 </div>
@@ -246,8 +246,8 @@ export default function CategoryHubClient({
                   완료: {cat.answeredCount}/{cat.totalCount}개
                 </p>
 
-                {/* 점수 뱃지 (진행 중인 경우에만 하단에 표시) */}
-                {scoreInfo && cat.completionPct < 100 && cat.completionPct > 0 && (
+                {/* 점수 뱃지 (항상 표시) */}
+                {scoreInfo && cat.answeredCount > 0 && (
                   <div className={`mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${scoreInfo.bg} ${scoreInfo.color}`}>
                     {scoreInfo.emoji} {scoreInfo.label}
                   </div>
