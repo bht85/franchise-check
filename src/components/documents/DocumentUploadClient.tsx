@@ -9,6 +9,8 @@ import type { DocumentType } from '@/types'
 
 interface Props {
   sessionId: string
+  remainingCount?: number
+  expiryDate?: string
 }
 
 const DOC_TYPES: { type: DocumentType; label: string; desc: string; important: boolean }[] = [
@@ -27,7 +29,7 @@ interface UploadedDoc {
   extractionCount?: number
 }
 
-export default function DocumentUploadClient({ sessionId }: Props) {
+export default function DocumentUploadClient({ sessionId, remainingCount = 5, expiryDate = '결제일로부터 7일' }: Props) {
   const router = useRouter()
   const [uploads, setUploads] = useState<UploadedDoc[]>([])
   const [isCalculating, setIsCalculating] = useState(false)
@@ -107,12 +109,31 @@ export default function DocumentUploadClient({ sessionId }: Props) {
 
   return (
     <div className="min-h-screen bg-white max-w-lg mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">문서 업로드</h1>
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold text-gray-900 flex items-center justify-between">
+          <span>문서 업로드</span>
+          <span className="text-[10px] bg-slate-900 text-white px-2 py-1 rounded tracking-wider align-middle">PREMIUM</span>
+        </h1>
         <p className="text-gray-500 text-sm mt-1 leading-relaxed">
-          관련 정보를 업로드하면 더욱 정확한 리포트를 생성할 수 있습니다.<br />
-          PDF를 업로드하면 AI가 핵심 항목을 자동 추출하여 비교합니다.
+          관련 정보를 업로드하면 더욱 정확한 프리미엄 리포트를 생성할 수 있습니다.
         </p>
+      </div>
+
+      <div className="bg-slate-900 text-white rounded-xl p-4 mb-6 relative overflow-hidden shadow-sm">
+        <div className="relative z-10">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-semibold text-slate-200">리포트 갱신(재분석) 횟수</p>
+            <p className="text-lg font-black">{remainingCount} <span className="text-sm text-slate-400 font-medium">/ 5 회</span></p>
+          </div>
+          {/* Progress bar */}
+          <div className="w-full bg-slate-800 rounded-full h-2 mb-3">
+            <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${(remainingCount / 5) * 100}%` }}></div>
+          </div>
+          <div className="text-xs text-slate-400 leading-relaxed space-y-1">
+            <p>• 기한: {expiryDate} 이내 사용 가능</p>
+            <p>• 협상 후 <strong>수정된 계약서</strong>를 받아 다시 업로드하고 검증해보세요!</p>
+          </div>
+        </div>
       </div>
 
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-sm text-blue-900 leading-relaxed">
