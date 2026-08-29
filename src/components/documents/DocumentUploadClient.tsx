@@ -130,8 +130,8 @@ export default function DocumentUploadClient({ sessionId, remainingCount = 5, ex
             <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${(remainingCount / 5) * 100}%` }}></div>
           </div>
           <div className="text-xs text-gray-400 leading-relaxed space-y-1">
-            <p>• 기한: {expiryDate} 이내 사용 가능</p>
-            <p>• 협상 후 <strong>수정된 계약서</strong>를 받아 다시 업로드하고 검증해보세요!</p>
+            <p>• 기한: <strong>{expiryDate}</strong>까지 사용 가능 (결제일 기준 7일)</p>
+            <p>• 본사 협상 후 <strong>수정된 계약서</strong>를 새로 받아 다시 점검해보세요!</p>
           </div>
         </div>
       </div>

@@ -29,5 +29,10 @@ export default async function UploadPage({ params }: Props) {
     redirect(`/session/${sessionId}/report`)
   }
 
-  return <DocumentUploadClient sessionId={sessionId} />
+  // 임시 만료일 계산 (현재 + 7일)
+  const expiryDateObj = new Date()
+  expiryDateObj.setDate(expiryDateObj.getDate() + 7)
+  const formattedExpiryDate = `${expiryDateObj.getFullYear()}년 ${expiryDateObj.getMonth() + 1}월 ${expiryDateObj.getDate()}일 23:59`
+
+  return <DocumentUploadClient sessionId={sessionId} expiryDate={formattedExpiryDate} />
 }
