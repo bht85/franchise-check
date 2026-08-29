@@ -104,7 +104,11 @@ export default async function ReportPage({ params }: Props) {
       {/* ── 프리미엄 뷰 ── */}
       {isPremiumCompleted && (
         <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-2">
-          <PremiumReportView brandName={reportData.brand?.brand_name || '브랜드'} sessionId={sessionId} />
+          <PremiumReportView 
+            brandName={reportData.brand?.brand_name || '브랜드'} 
+            sessionId={sessionId} 
+            readinessScore={readinessScore} 
+          />
         </div>
       )}
 

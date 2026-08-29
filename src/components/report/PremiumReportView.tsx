@@ -1,9 +1,9 @@
 'use client'
 
-import { AlertTriangle, CheckCircle, FileText, Download, MessageCircle, Scale, ShieldAlert, Upload } from 'lucide-react'
+import { AlertTriangle, CheckCircle, FileText, Download, MessageCircle, Scale, ShieldAlert, Upload, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
-export default function PremiumReportView({ brandName, sessionId }: { brandName: string, sessionId: string }) {
+export default function PremiumReportView({ brandName, sessionId, readinessScore }: { brandName: string, sessionId: string, readinessScore: number }) {
   return (
     <div className="w-full mb-8 relative print:mb-0">
       {/* ── 프리미엄 배너/헤더 ── */}
@@ -38,6 +38,31 @@ export default function PremiumReportView({ brandName, sessionId }: { brandName:
 
       {/* ── 심층 분석 내용 ── */}
       <div className="bg-white rounded-b-3xl border-x border-b border-gray-200 p-6 sm:p-8 shadow-sm print:rounded-none print:border-none print:shadow-none">
+        
+        {/* ── AI 종합 요약 (Executive Summary) ── */}
+        <div className="mb-10 bg-indigo-50/50 rounded-2xl p-6 border border-indigo-100 print:bg-indigo-50 print:border-indigo-200 print:break-inside-avoid">
+          <h2 className="text-lg font-black text-indigo-900 mb-4 flex items-center gap-2">
+            <Sparkles className="text-indigo-600" size={20} />
+            AI 최종 종합 요약
+          </h2>
+          <ul className="space-y-3 text-[15px] text-gray-700 leading-relaxed font-medium">
+            <li className="flex items-start gap-2">
+              <span className="text-indigo-500 mt-0.5">•</span>
+              <span>본사 상담 시 <strong>"로열티 없음"</strong>을 안내받았으나, 실제 계약서에는 <strong className="text-red-600 bg-red-50 px-1 rounded">매출의 3% 로열티</strong>가 은닉되어 있습니다. (가장 치명적인 리스크)</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-indigo-500 mt-0.5">•</span>
+              <span>중도해지 위약금이 <strong>잔여 로열티의 50%</strong>로 업계 평균 대비 과도하게 높게 설정되어 있습니다.</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-indigo-500 mt-0.5">•</span>
+              <span>
+                현재 서류 검토 및 점검 상태를 종합한 <strong>계약 준비도는 {readinessScore}점</strong>으로, 
+                당장 계약에 서명하기엔 무리가 있습니다. 발견된 독소조항에 대해 본사와 재협상이 강력히 요구됩니다.
+              </span>
+            </li>
+          </ul>
+        </div>
         
         <div className="flex items-center gap-2 mb-6">
           <ShieldAlert className="text-red-600" size={24} />
