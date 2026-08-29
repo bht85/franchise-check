@@ -30,7 +30,7 @@ function AnswerStateSelector({
   const options: Array<{ value: AnswerState; label: string; active: string }> = [
     { value: 'confirmed', label: '확인함', active: 'border-green-500 bg-green-50 text-green-700' },
     { value: 'unknown', label: '모름', active: 'border-amber-500 bg-amber-50 text-amber-700' },
-    { value: 'not_checked', label: '확인 안 함', active: 'border-[#E5E7EB] bg-gray-100 text-[#737983]' },
+    { value: 'not_checked', label: '미확인', active: 'border-[#E5E7EB] bg-gray-100 text-[#737983]' },
   ]
 
   return (
