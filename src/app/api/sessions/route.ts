@@ -34,19 +34,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '브랜드명과 본사명은 필수입니다.' }, { status: 400 })
   }
 
-  // ── [무료 버전 3개 제한 로직] ──
-  const { data: userSessions, error: countError } = await supabase
+  // ── [무료 버전 1개 제한 및 추가 결제 확인 로직] ──
+  const { count, error: countError } = await supabase
     .from('brand_sessions')
-    .select('is_premium')
+    .select('*', { count: 'exact', head: true })
     .eq('user_id', userId)
 
   if (countError) {
     return NextResponse.json({ error: countError.message }, { status: 500 })
   }
 
-  const isPremium = userSessions.some(s => s.is_premium)
-  if (!isPremium && userSessions.length >= 3) {
-    return NextResponse.json({ error: '무료 버전에서는 최대 3개까지만 검증을 진행할 수 있습니다.' }, { status: 403 })
+  const cookieStore = req.cookies
+  const hasPaid = cookieStore.get('paid_for_new_session')?.value === 'true'
+
+  if (count !== null && count >= 1 && !hasPaid) {
+    return NextResponse.json({ error: '추가 검증을 진행하려면 결제가 필요합니다.' }, { status: 403 })
   }
   // ──────────────────────────────
 
@@ -91,5 +93,11 @@ export async function POST(req: NextRequest) {
 
   if (sessionError) return NextResponse.json({ error: sessionError.message }, { status: 500 })
 
-  return NextResponse.json({ session }, { status: 201 })
+  const response = NextResponse.json({ session }, { status: 201 })
+  if (hasPaid) {
+    // 세션이 생성되었으므로 1회성 결제 증명 쿠키 소진
+    response.cookies.delete('paid_for_new_session')
+  }
+
+  return response
 }

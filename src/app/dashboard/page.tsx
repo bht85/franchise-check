@@ -155,6 +155,15 @@ export default async function DashboardPage() {
                 ))}
               </div>
 
+              {/* 추가 검증 결제 버튼 */}
+              <Link
+                href="/api/checkout/new-session"
+                className="mt-4 w-full flex items-center justify-center gap-2 bg-indigo-50 text-indigo-700 font-bold px-6 py-4 rounded-2xl hover:bg-indigo-100 transition-colors border border-indigo-100 shadow-sm"
+              >
+                <span>➕ 새로운 프랜차이즈 검증 추가</span>
+                <span className="text-xs font-semibold bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded-md ml-1">5,000원</span>
+              </Link>
+
               {/* 리소스 배너 */}
               <Link
                 href="/resources"
