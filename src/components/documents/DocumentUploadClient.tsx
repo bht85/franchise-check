@@ -112,24 +112,24 @@ export default function DocumentUploadClient({ sessionId, remainingCount = 5, ex
       <div className="mb-5">
         <h1 className="text-2xl font-bold text-gray-900 flex items-center justify-between">
           <span>문서 업로드</span>
-          <span className="text-[10px] bg-slate-900 text-white px-2 py-1 rounded tracking-wider align-middle">PREMIUM</span>
+          <span className="text-[10px] bg-gray-900 text-white px-2 py-1 rounded tracking-wider align-middle">PREMIUM</span>
         </h1>
         <p className="text-gray-500 text-sm mt-1 leading-relaxed">
           관련 정보를 업로드하면 더욱 정확한 프리미엄 리포트를 생성할 수 있습니다.
         </p>
       </div>
 
-      <div className="bg-slate-900 text-white rounded-xl p-4 mb-6 relative overflow-hidden shadow-sm">
+      <div className="bg-gray-900 text-white rounded-xl p-4 mb-6 relative overflow-hidden shadow-sm">
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-semibold text-slate-200">리포트 갱신(재분석) 횟수</p>
-            <p className="text-lg font-black">{remainingCount} <span className="text-sm text-slate-400 font-medium">/ 5 회</span></p>
+            <p className="text-sm font-semibold text-gray-200">리포트 갱신(재분석) 횟수</p>
+            <p className="text-lg font-black">{remainingCount} <span className="text-sm text-gray-400 font-medium">/ 5 회</span></p>
           </div>
           {/* Progress bar */}
-          <div className="w-full bg-slate-800 rounded-full h-2 mb-3">
+          <div className="w-full bg-gray-800 rounded-full h-2 mb-3">
             <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${(remainingCount / 5) * 100}%` }}></div>
           </div>
-          <div className="text-xs text-slate-400 leading-relaxed space-y-1">
+          <div className="text-xs text-gray-400 leading-relaxed space-y-1">
             <p>• 기한: {expiryDate} 이내 사용 가능</p>
             <p>• 협상 후 <strong>수정된 계약서</strong>를 받아 다시 업로드하고 검증해보세요!</p>
           </div>
