@@ -70,6 +70,11 @@ export default async function ReportPage({ params }: Props) {
     return (
       <div className="min-h-screen bg-[#F6F7F9] flex flex-col items-center justify-center px-4">
         <div className="bg-white rounded-3xl p-12 border border-[#E5E7EB] text-center max-w-sm w-full">
+          {session.status === 'in_progress' && (
+            <div className="inline-block mb-4 px-3 py-1 bg-amber-100 text-amber-800 text-sm font-bold rounded-full">
+              ⚠️ 일부 항목 미확인 (중간 점검 리포트)
+            </div>
+          )}
           <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
             <FileText className="text-indigo-500" size={24} />
           </div>
@@ -118,6 +123,11 @@ export default async function ReportPage({ params }: Props) {
           <p className="text-xs font-semibold text-[#737983] uppercase tracking-wider mb-4">
             가맹계약 준비 상태
           </p>
+          {session.status === 'in_progress' && (
+            <div className="inline-block mb-4 px-3 py-1 bg-amber-100 text-amber-800 text-sm font-bold rounded-full">
+              ⚠️ 일부 항목 미확인 (중간 점검 리포트)
+            </div>
+          )}
           {reportData.brand?.brand_name && (
             <p className="text-sm text-[#737983] mb-3">{reportData.brand.brand_name}</p>
           )}
@@ -318,7 +328,7 @@ export default async function ReportPage({ params }: Props) {
             className="flex-1 bg-indigo-600 text-white font-semibold py-3.5 rounded-2xl hover:bg-indigo-700 flex items-center justify-center gap-2 text-sm transition-colors"
           >
             <FileText size={16} />
-            답변 수정
+            {session.status === 'in_progress' ? '나머지 항목 마저 점검하기' : '답변 수정 및 재점검'}
           </Link>
         </div>
         <Link

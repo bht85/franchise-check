@@ -111,7 +111,9 @@ export class RiskEngine {
   ): number {
     const criticalFlags = flags.filter((f) => f.severity === 'critical').length
     const warningFlags = flags.filter((f) => f.severity === 'warning').length
-    let score = 100
+    
+    let score = this.calcInfoCheck(input) // 정보 확인도를 기본 점수로 시작
+    
     score -= criticalFlags * 20
     score -= warningFlags * 8
     return Math.max(0, Math.min(100, score))
@@ -483,10 +485,11 @@ export class RiskEngine {
       const state = getAnswerState(answersByKey, item.key)
       const val = getAnswerValue(answersByKey, item.key)
       const isMissing =
-        state === 'not_checked' ||
-        state === 'unknown' ||
-        val === 'not_requested' ||
-        val === 'unknown'
+        state !== 'not_checked' && (
+          state === 'unknown' ||
+          val === 'not_requested' ||
+          val === 'unknown'
+        )
 
       if (isMissing) {
         flags.push({
@@ -507,9 +510,10 @@ export class RiskEngine {
   /** 실제 점주 확인 미이행 */
   private detectOwnerVerification(input: RiskEngineInput): Omit<RiskFlag, 'id' | 'created_at'>[] {
     const flags: Omit<RiskFlag, 'id' | 'created_at'>[] = []
+    const state = getAnswerState(input.answersByKey, 'actual_owner_contacted')
     const ownerContacted = getAnswerValue(input.answersByKey, 'actual_owner_contacted')
 
-    if (ownerContacted !== 'yes') {
+    if (state !== 'not_checked' && ownerContacted !== 'yes') {
       flags.push({
         session_id: input.sessionId,
         flag_type: 'missing_critical',
