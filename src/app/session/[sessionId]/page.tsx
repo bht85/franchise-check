@@ -10,6 +10,33 @@ interface Props {
 
 const HUB_STEPS = [1, 3, 4, 5, 6, 7]
 
+async function getLatestNews(brandName: string) {
+  if (!brandName) return []
+  try {
+    const res = await fetch(`https://news.google.com/rss/search?q=${encodeURIComponent(brandName)}&hl=ko&gl=KR&ceid=KR:ko`, { 
+      next: { revalidate: 3600 } 
+    })
+    const text = await res.text()
+    
+    const items: Array<{ title: string; link: string; date: string }> = []
+    const itemRegex = /<item>[\s\S]*?<title>(.*?)<\/title>[\s\S]*?<link>(.*?)<\/link>[\s\S]*?<pubDate>(.*?)<\/pubDate>/g
+    
+    let match
+    let count = 0
+    while ((match = itemRegex.exec(text)) !== null && count < 3) {
+      items.push({
+        title: match[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/ - .*$/, ''),
+        link: match[2],
+        date: new Date(match[3]).toLocaleDateString('ko-KR')
+      })
+      count++
+    }
+    return items
+  } catch (e) {
+    return []
+  }
+}
+
 export default async function SessionHubPage({ params, searchParams }: Props) {
   const supabase = await createSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -62,6 +89,7 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   }
 
   const justCompletedStep = completed ? parseInt(completed, 10) : null
+  const latestNews = await getLatestNews(brand?.brand_name ?? '')
 
   return (
     <CategoryHubClient
@@ -71,6 +99,7 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
       initialQuestions={(questions ?? []) as Question[]}
       initialAnswers={(answers ?? []) as QuestionAnswer[]}
       justCompletedStep={Number.isNaN(justCompletedStep) ? null : justCompletedStep}
+      latestNews={latestNews}
     />
   )
 }

@@ -25,6 +25,12 @@ function getScoreLabel(score: number) {
 }
 
 // ── Props ──────────────────────────────────────────────────────
+export interface NewsItem {
+  title: string;
+  link: string;
+  date: string;
+}
+
 interface Props {
   sessionId: string
   brandName: string
@@ -32,6 +38,7 @@ interface Props {
   initialQuestions: Question[]
   initialAnswers: QuestionAnswer[]
   justCompletedStep: number | null
+  latestNews?: NewsItem[]
 }
 
 export default function CategoryHubClient({
@@ -41,6 +48,7 @@ export default function CategoryHubClient({
   initialQuestions,
   initialAnswers,
   justCompletedStep,
+  latestNews,
 }: Props) {
   const router = useRouter()
   const [isReportLoading, setIsReportLoading] = useState(false)
@@ -273,6 +281,34 @@ export default function CategoryHubClient({
             </div>
           )}
         </div>
+
+        {/* ── 최신 뉴스 섹션 ─────────────────────────────── */}
+        {latestNews && latestNews.length > 0 && (
+          <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm px-6 py-5 mt-6 mb-8">
+            <h2 className="text-sm font-bold text-[#171A1F] mb-3 flex items-center gap-1.5">
+              <span className="text-lg">📰</span> {brandName} 최근 뉴스
+            </h2>
+            <div className="flex flex-col gap-3">
+              {latestNews.map((news, idx) => (
+                <a
+                  key={idx}
+                  href={news.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col gap-1 p-3 rounded-xl bg-[#F6F7F9] hover:bg-[#EFF1F4] transition-colors"
+                >
+                  <p className="text-sm font-medium text-[#171A1F] leading-snug line-clamp-2">
+                    {news.title}
+                  </p>
+                  <p className="text-[11px] text-[#737983]">{news.date}</p>
+                </a>
+              ))}
+            </div>
+            <p className="text-[10px] text-center text-[#A0A5B1] mt-4">
+              Google News 검색 결과입니다.
+            </p>
+          </div>
+        )}
       </main>
     </div>
   )
