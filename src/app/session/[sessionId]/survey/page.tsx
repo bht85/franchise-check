@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import { redirect } from 'next/navigation'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import SurveyPageClient from '@/components/survey/SurveyPageClient'

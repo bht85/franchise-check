@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import Link from 'next/link'
 import DashboardHeader from '@/components/layout/DashboardHeader'
 import { Check, ArrowRight, Zap, ShieldCheck } from 'lucide-react'

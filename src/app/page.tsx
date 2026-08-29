@@ -1,3 +1,4 @@
+export const runtime = 'edge'
 import Link from 'next/link'
 import { ArrowRight, Shield, FileSearch, AlertTriangle, CheckCircle2 } from 'lucide-react'
 
