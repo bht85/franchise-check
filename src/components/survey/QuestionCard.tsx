@@ -182,10 +182,16 @@ export default function QuestionCard({
                 />
               </div>
             )}
+
+            {(question.answer_type === 'amount' || question.answer_type === 'text') && (
+              <p className="text-[13px] text-[#737983] mt-4">
+                * 모르시거나 아직 확인 전이라면 비워두고 다음으로 넘어가셔도 됩니다.
+              </p>
+            )}
           </div>
 
           {/* 선택 항목 표시 */}
-          {!question.is_required && (
+          {!question.is_required && question.answer_type === 'select' && (
             <p className="text-xs text-[#737983] mb-5">
               선택 항목 — 모르면 건너뛰어도 됩니다
             </p>
