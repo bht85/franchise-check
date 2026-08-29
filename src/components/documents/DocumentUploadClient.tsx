@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Upload, FileText, CheckCircle2, Loader2, X } from 'lucide-react'
+import { Upload, FileText, CheckCircle2, Loader2, X, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DOCUMENT_TYPE_LABELS } from '@/types'
 import type { DocumentType } from '@/types'
@@ -112,6 +112,20 @@ export default function DocumentUploadClient({ sessionId }: Props) {
         <p className="text-gray-500 text-sm mt-1 leading-relaxed">
           관련 정보를 업로드하면 더욱 정확한 리포트를 생성할 수 있습니다.<br />
           PDF를 업로드하면 AI가 핵심 항목을 자동 추출하여 비교합니다.
+        </p>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-sm text-blue-900 leading-relaxed">
+        <p className="font-bold flex items-center gap-1.5 mb-2">
+          <Info size={16} className="text-blue-700" />
+          잠깐! 아직 서류를 못 받으셨나요?
+        </p>
+        <ul className="space-y-1.5 list-disc list-inside text-blue-800/90 ml-1">
+          <li><strong>정보공개서 & 계약서:</strong> 계약 체결 <strong className="text-blue-700 font-bold">14일 전</strong> 서면 제공이 법적 의무입니다.</li>
+          <li><strong>예상매출액 산정서:</strong> 중대형 프랜차이즈의 경우 서면 제공이 필수입니다.</li>
+        </ul>
+        <p className="mt-2 text-xs text-blue-600/80 bg-blue-100/50 p-2 rounded-lg">
+          "다들 일단 가계약금부터 낸다"는 본사의 말에 휘둘리지 마시고, 서류부터 당당하게 요구하여 꼼꼼히 확인하세요!
         </p>
       </div>
 
