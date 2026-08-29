@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
   }
 
 
-  // 문서 조회
+  // 문서 조회 (소유권 확인을 위해 세션 조인)
   const { data: doc, error: docError } = await supabase
     .from('documents')
-    .select('*')
+    .select('*, session:brand_sessions(user_id)')
     .eq('id', document_id)
     .single()
 
