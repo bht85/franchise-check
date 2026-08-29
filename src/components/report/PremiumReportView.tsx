@@ -1,8 +1,9 @@
 'use client'
 
-import { AlertTriangle, CheckCircle, FileText, Download, MessageCircle, Scale, ShieldAlert } from 'lucide-react'
+import { AlertTriangle, CheckCircle, FileText, Download, MessageCircle, Scale, ShieldAlert, Upload } from 'lucide-react'
+import Link from 'next/link'
 
-export default function PremiumReportView({ brandName }: { brandName: string }) {
+export default function PremiumReportView({ brandName, sessionId }: { brandName: string, sessionId: string }) {
   return (
     <div className="w-full mb-8 relative print:mb-0">
       {/* ── 프리미엄 배너/헤더 ── */}
@@ -121,13 +122,23 @@ export default function PremiumReportView({ brandName }: { brandName: string }) 
         </div>
 
         {/* ── 액션 ── */}
-        <button 
-          onClick={() => window.print()}
-          className="w-full mt-6 bg-gray-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors shadow-lg print:hidden"
-        >
-          <Download size={18} />
-          전문가용 리포트 PDF 다운로드
-        </button>
+        <div className="mt-8 flex flex-col sm:flex-row gap-3 print:hidden">
+          <button 
+            onClick={() => window.print()}
+            className="flex-1 bg-gray-900 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors shadow-lg"
+          >
+            <Download size={18} />
+            PDF 다운로드
+          </button>
+          
+          <Link 
+            href={`/session/${sessionId}/upload`}
+            className="flex-1 bg-blue-50 text-blue-700 border border-blue-200 font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-100 transition-colors"
+          >
+            <Upload size={18} />
+            수정된 계약서 재업로드
+          </Link>
+        </div>
 
       </div>
     </div>
