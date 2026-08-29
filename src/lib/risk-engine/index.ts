@@ -183,24 +183,36 @@ export class RiskEngine {
   /** 본사 정보 투명성 */
   private calcHqTransparency(input: RiskEngineInput): number {
     const { answersByKey } = input
-    let score = 100
+    let score = 0
 
-    // 예상매출액 산정서 미제공
-    const salesEstimate = getAnswerValue(answersByKey, 'sales_estimate_received')
-    if (salesEstimate === 'not_requested') score -= 20
-    else if (salesEstimate === 'requested_not_received') score -= 30
-    else if (salesEstimate === 'unknown') score -= 35
+    // 1. 예상매출액 산정서 (45점)
+    const stateSalesEst = getAnswerState(answersByKey, 'sales_estimate_received')
+    const valSalesEst = getAnswerValue(answersByKey, 'sales_estimate_received')
+    if (stateSalesEst === 'confirmed') {
+      if (valSalesEst === 'received') score += 45
+      else if (valSalesEst === 'not_requested') score += 25
+      else if (valSalesEst === 'requested_not_received') score += 15
+      else if (valSalesEst === 'unknown') score += 10
+    }
 
-    // 매출 산정 기준 미설명
-    const salesDocReceived = getAnswerValue(answersByKey, 'hq_sales_doc_received')
-    if (salesDocReceived === 'no') score -= 15
-    else if (salesDocReceived === 'unknown') score -= 20
+    // 2. 매출 산정 기준 (35점)
+    const stateDoc = getAnswerState(answersByKey, 'hq_sales_doc_received')
+    const valDoc = getAnswerValue(answersByKey, 'hq_sales_doc_received')
+    if (stateDoc === 'confirmed') {
+      if (valDoc === 'yes') score += 35
+      else if (valDoc === 'no') score += 20
+      else if (valDoc === 'unknown') score += 15
+    }
 
-    // 영업지역 모름
-    const territory = getAnswerValue(answersByKey, 'hq_claimed_territory')
-    if (territory === 'unknown') score -= 10
+    // 3. 영업지역 (20점)
+    const stateTerritory = getAnswerState(answersByKey, 'hq_claimed_territory')
+    const valTerritory = getAnswerValue(answersByKey, 'hq_claimed_territory')
+    if (stateTerritory === 'confirmed') {
+      if (valTerritory && valTerritory !== 'unknown') score += 20
+      else score += 10
+    }
 
-    return Math.max(0, score)
+    return Math.max(0, Math.min(100, score))
   }
 
   /** 계약조건 확인도 */

@@ -2,21 +2,34 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { QuestionEngine } from '@/lib/question-engine'
 import { useSurveyStore, saveAnswer } from '@/store/surveyStore'
 import QuestionCard from '@/components/survey/QuestionCard'
 import type { Question, QuestionAnswer, AnswerState, SourceType } from '@/types'
 
+// ── 카테고리 맵 ───────────────────────────────────────────────
+const CATEGORY_MAP: Record<number, { label: string; icon: string }> = {
+  1: { label: '나의 창업 상황', icon: '💰' },
+  3: { label: '본사 상담 내용', icon: '🤝' },
+  4: { label: '투자금/비용 확인', icon: '💵' },
+  5: { label: '매출/수익 확인', icon: '📊' },
+  6: { label: '계약조건 확인', icon: '📋' },
+  7: { label: '본사/가맹점 확인', icon: '🔍' },
+}
+
 interface SurveyPageClientProps {
   sessionId: string
   initialQuestions: Question[]
   initialAnswers: QuestionAnswer[]
+  stepNumber?: number | null
 }
 
 export default function SurveyPageClient({
   sessionId,
   initialQuestions,
   initialAnswers,
+  stepNumber,
 }: SurveyPageClientProps) {
   const router = useRouter()
   const { answers, answersByKey, setSession, setCurrentQuestion, setAnswer, setAnswers, setSaving } =
@@ -85,7 +98,12 @@ export default function SurveyPageClient({
       setCurrentQ(next)
       setCurrentQuestion(next.id)
     } else {
-      // 완료 → 1차 리포트 생성 API 호출 후 이동
+      // 카테고리 모드: 해당 step 완료 → 허브로 복귀
+      if (stepNumber != null) {
+        router.push(`/session/${sessionId}?completed=${stepNumber}`)
+        return
+      }
+      // 전체 모드: 리포트 생성
       setIsReportLoading(true)
       try {
         const res = await fetch('/api/risk/calculate', {
@@ -101,7 +119,7 @@ export default function SurveyPageClient({
         setIsReportLoading(false)
       }
     }
-  }, [currentQuestion, engine, sessionId, router, setCurrentQuestion])
+  }, [currentQuestion, engine, sessionId, stepNumber, router, setCurrentQuestion])
 
   const handlePrevious = useCallback(() => {
     if (!currentQuestion) return
@@ -112,6 +130,9 @@ export default function SurveyPageClient({
       setCurrentQuestion(prev.id)
     }
   }, [currentQuestion, engine, setCurrentQuestion])
+
+  // ── 카테고리 모드 헤더 ────────────────────────────────────
+  const categoryInfo = stepNumber != null ? CATEGORY_MAP[stepNumber] : null
 
   if (!isMounted || !currentQuestion) {
     return (
@@ -137,16 +158,36 @@ export default function SurveyPageClient({
   }
 
   return (
-    <QuestionCard
-      key={currentQuestion.id}
-      question={currentQuestion}
-      currentAnswer={answers[currentQuestion.id]}
-      onAnswer={handleAnswer}
-      onNext={handleNext}
-      onPrevious={handlePrevious}
-      hasPrevious={!!engine.getPrevious(currentQuestion.id)}
-      hasNext={!engine.isComplete(currentQuestion.id)}
-      progress={progress}
-    />
+    <div className="flex flex-col min-h-screen">
+      {/* 카테고리 모드 서브 헤더 */}
+      {categoryInfo && (
+        <div className="bg-white border-b border-[#E5E7EB] px-4 py-3 sticky top-0 z-20">
+          <div className="max-w-2xl mx-auto flex items-center justify-between gap-3">
+            <Link
+              href={`/session/${sessionId}`}
+              className="text-sm text-[#737983] hover:text-[#171A1F] transition-colors flex items-center gap-1 shrink-0"
+            >
+              ← 카테고리 선택으로
+            </Link>
+            <span className="text-sm font-semibold text-[#171A1F] truncate text-center">
+              {categoryInfo.icon} {categoryInfo.label} &rsaquo; 질문 {progress.current}/{progress.total}
+            </span>
+            <div className="w-28 shrink-0" />
+          </div>
+        </div>
+      )}
+
+      <QuestionCard
+        key={currentQuestion.id}
+        question={currentQuestion}
+        currentAnswer={answers[currentQuestion.id]}
+        onAnswer={handleAnswer}
+        onNext={handleNext}
+        onPrevious={handlePrevious}
+        hasPrevious={!!engine.getPrevious(currentQuestion.id)}
+        hasNext={!engine.isComplete(currentQuestion.id)}
+        progress={progress}
+      />
+    </div>
   )
 }

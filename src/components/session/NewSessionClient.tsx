@@ -43,7 +43,8 @@ export default function NewSessionClient() {
         throw new Error(data.error ?? '세션 생성 실패')
       }
 
-      router.push(`/session/${data.session.id}/survey`)
+      // 카테고리 허브로 이동 (기존: /session/${data.session.id}/survey)
+      router.push(`/session/${data.session.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : '오류가 발생했습니다.')
       setIsLoading(false)
@@ -129,7 +130,7 @@ export default function NewSessionClient() {
             <div className="bg-white rounded-2xl p-6 border border-[#E5E7EB]">
               <p className="text-sm font-semibold text-[#171A1F] mb-3">시작 전 참고사항</p>
               <ul className="text-sm text-[#737983] space-y-2">
-                <li>• 총 약 50~60개 항목입니다.</li>
+                <li>• 6개 카테고리를 원하는 순서로 선택할 수 있습니다.</li>
                 <li>• 모르는 항목은 &apos;모름&apos;을 선택하면 됩니다.</li>
                 <li>• 중간에 나가도 이어서 할 수 있습니다.</li>
                 <li>• 마지막에 PDF 리포트를 받을 수 있습니다.</li>
@@ -155,7 +156,7 @@ export default function NewSessionClient() {
               )}
             >
               {isLoading ? '만드는 중...' : (
-                <>체크 시작하기 <ArrowRight size={20} /></>
+                <>카테고리 허브로 시작하기 <ArrowRight size={20} /></>
               )}
             </button>
           </div>

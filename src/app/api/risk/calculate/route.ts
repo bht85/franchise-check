@@ -83,26 +83,54 @@ export async function POST(req: NextRequest) {
       user_situation: userSituation,
     }
 
-    // 5. DB 저장
-    const { data: report, error } = await supabase
+    // 5. DB 저장 (upsert 대신 select 후 분기 처리 - session_id unique 제약조건 이슈 우회)
+    const { data: existingReport } = await supabase
       .from('reports')
-      .upsert({
-        session_id,
-        report_data: reportData,
-        verdict: output.verdict,
-      }, { onConflict: 'session_id' })
-      .select()
-      .single()
+      .select('id')
+      .eq('session_id', session_id)
+      .maybeSingle()
 
-    if (error) {
+    let report
+    let error
+
+    if (existingReport) {
+      // Update
+      const res = await supabase
+        .from('reports')
+        .update({
+          report_data: reportData,
+          verdict: output.verdict,
+        })
+        .eq('id', existingReport.id)
+        .select()
+        .single()
+      report = res.data
+      error = res.error
+    } else {
+      // Insert
+      const res = await supabase
+        .from('reports')
+        .insert({
+          session_id,
+          report_data: reportData,
+          verdict: output.verdict,
+        })
+        .select()
+        .single()
+      report = res.data
+      error = res.error
+    }
+
+    if (error || !report) {
       console.error('Report upsert error:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    // 상태 업데이트
+    // 상태 업데이트 (진행률이 100%일 때만 최종 완료 처리, 아닐 경우 계속 진행 중 상태 유지)
+    const newStatus = session.completion_pct >= 100 ? 'completed' : 'in_progress'
     await supabase
       .from('brand_sessions')
-      .update({ status: 'completed' })
+      .update({ status: newStatus })
       .eq('id', session_id)
 
     return NextResponse.json({ report, share_token: report.share_token })

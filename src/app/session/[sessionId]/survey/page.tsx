@@ -6,15 +6,18 @@ import { TEST_USER_ID } from '@/lib/utils'
 
 interface Props {
   params: Promise<{ sessionId: string }>
+  searchParams: Promise<{ step?: string }>
 }
 
-export default async function SurveyPage({ params }: Props) {
+export default async function SurveyPage({ params, searchParams }: Props) {
   const supabase = await createSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
   const userId = user.id
 
   const { sessionId } = await params
+  const { step } = await searchParams
+  const stepNumber = step ? parseInt(step, 10) : null
 
   // 세션 소유권 확인
   const { data: session, error: sessionError } = await supabase
@@ -34,9 +37,9 @@ export default async function SurveyPage({ params }: Props) {
   }
 
   // 전체 활성 질문 로드
-  const { data: questions, error: questionsError } = await supabase
+  const { data: allQuestions, error: questionsError } = await supabase
     .from('questions')
-    .select('*, options:question_options(*), conditions:question_conditions!question_conditions_question_id_fkey(*)')
+    .select('*, options:question_options(*), conditions:question_conditions!question_id(*)')
     .eq('is_active', true)
     .order('step_number')
     .order('order_in_step')
@@ -45,8 +48,11 @@ export default async function SurveyPage({ params }: Props) {
     console.error('[SurveyPage] questions fetch error:', questionsError)
   }
 
-  
-  
+  // step 파라미터가 있으면 해당 step 질문만 필터링
+  const questions = (allQuestions ?? []).filter((q) =>
+    stepNumber != null ? q.step_number === stepNumber : true
+  )
+
   // 기존 답변 로드
   const { data: answers, error: answersError } = await supabase
     .from('question_answers')
@@ -67,7 +73,7 @@ export default async function SurveyPage({ params }: Props) {
     .eq('user_id', userId)
     .single()
     
-  if (profile?.preferences && questions) {
+  if (profile?.preferences && allQuestions) {
     const prefs = profile.preferences as Record<string, any>
     
     // answers 배열에 있는 question_id 추출
@@ -75,7 +81,7 @@ export default async function SurveyPage({ params }: Props) {
     
     // questions 배열에서 key -> id 매핑 만들기
     const keyToId: Record<string, string> = {}
-    for (const q of questions) {
+    for (const q of allQuestions) {
       keyToId[q.question_key] = q.id
     }
     
@@ -102,8 +108,9 @@ export default async function SurveyPage({ params }: Props) {
   return (
     <SurveyPageClient
       sessionId={sessionId}
-      initialQuestions={(questions ?? []) as Question[]}
+      initialQuestions={questions as Question[]}
       initialAnswers={finalAnswers}
+      stepNumber={stepNumber}
     />
   )
 }

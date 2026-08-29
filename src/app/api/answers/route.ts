@@ -75,5 +75,27 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
+  // 전체 진행률(completion_pct) 계산 및 업데이트
+  // 1. 전체 활성 질문 수
+  const { count: totalQuestions } = await supabase
+    .from('questions')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_active', true)
+    
+  // 2. 현재 답변된(답변 안함 제외) 질문 수
+  const { count: answeredQuestions } = await supabase
+    .from('question_answers')
+    .select('id', { count: 'exact', head: true })
+    .eq('session_id', session_id)
+    .neq('answer_state', 'not_checked')
+
+  if (totalQuestions && totalQuestions > 0) {
+    const pct = Math.round(((answeredQuestions || 0) / totalQuestions) * 100)
+    await supabase
+      .from('brand_sessions')
+      .update({ completion_pct: pct })
+      .eq('id', session_id)
+  }
+
   return NextResponse.json({ answer })
 }

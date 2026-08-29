@@ -59,7 +59,7 @@ export default async function DashboardPage() {
                     href={
                       session.status === 'completed'
                         ? `/session/${session.id}/report`
-                        : `/session/${session.id}/survey`
+                        : `/session/${session.id}`
                     }
                     className="block bg-white rounded-2xl border border-[#E5E7EB] p-6 hover:border-indigo-300 hover:shadow-sm transition-all group"
                   >
@@ -82,39 +82,60 @@ export default async function DashboardPage() {
                       </span>
                     </div>
 
-                    {session.status === 'in_progress' && (
-                      <div className="mb-4">
-                        <div className="flex justify-between text-xs text-[#737983] mb-2">
-                          <span>진행률</span>
-                          <span>{session.completion_pct}%</span>
-                        </div>
-                        <div className="w-full bg-[#E5E7EB] rounded-full h-1">
-                          <div
-                            className="bg-indigo-500 h-1 rounded-full transition-all"
-                            style={{ width: `${session.completion_pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {session.status === 'completed' && (() => {
+                    {(() => {
                       const reports = session.reports as any
                       const reportData = Array.isArray(reports) ? reports[0]?.report_data : reports?.report_data
-                      if (!reportData) return null
-                      
-                      const score = reportData.risk_result.readiness_score
-                      const level = getScoreLevel(score)
-                      const config = SCORE_LEVEL_CONFIG[level]
+
                       return (
-                        <div className={cn("mb-4 p-4 rounded-xl flex items-center justify-between border border-opacity-20", config.bgColor, config.color.replace('text-', 'border-'))}>
-                          <div className="flex flex-col">
-                            <span className={cn("text-xs font-semibold mb-1", config.color)}>검증 점수</span>
-                            <span className="text-2xl font-bold text-[#171A1F] leading-none">{score}<span className="text-sm font-medium text-[#737983] ml-0.5">점</span></span>
-                          </div>
-                          <div className={cn("text-sm font-bold px-3 py-1 rounded-full", config.bgColor, config.color, "mix-blend-multiply opacity-90")}>
-                            {config.label}
-                          </div>
-                        </div>
+                        <>
+                          {session.status === 'in_progress' && (
+                            <div className="mb-4">
+                              <div className="flex justify-between text-xs text-[#737983] mb-2">
+                                <span>진행률</span>
+                                <span>{session.completion_pct}%</span>
+                              </div>
+                              <div className="w-full bg-[#E5E7EB] rounded-full h-1 mb-4">
+                                <div
+                                  className="bg-indigo-500 h-1 rounded-full transition-all"
+                                  style={{ width: `${session.completion_pct}%` }}
+                                />
+                              </div>
+                              {reportData && (() => {
+                                const score = reportData.risk_result.readiness_score
+                                const level = getScoreLevel(score)
+                                const config = SCORE_LEVEL_CONFIG[level]
+                                return (
+                                  <div className={cn("p-4 rounded-xl flex items-center justify-between border border-opacity-20", config.bgColor, config.color.replace('text-', 'border-'))}>
+                                    <div className="flex flex-col">
+                                      <span className={cn("text-xs font-semibold mb-1", config.color)}>중간 점검 점수</span>
+                                      <span className="text-2xl font-bold text-[#171A1F] leading-none">{score}<span className="text-sm font-medium text-[#737983] ml-0.5">점</span></span>
+                                    </div>
+                                    <div className={cn("text-sm font-bold px-3 py-1 rounded-full", config.bgColor, config.color, "mix-blend-multiply opacity-90")}>
+                                      {config.label}
+                                    </div>
+                                  </div>
+                                )
+                              })()}
+                            </div>
+                          )}
+
+                          {session.status === 'completed' && reportData && (() => {
+                            const score = reportData.risk_result.readiness_score
+                            const level = getScoreLevel(score)
+                            const config = SCORE_LEVEL_CONFIG[level]
+                            return (
+                              <div className={cn("mb-4 p-4 rounded-xl flex items-center justify-between border border-opacity-20", config.bgColor, config.color.replace('text-', 'border-'))}>
+                                <div className="flex flex-col">
+                                  <span className={cn("text-xs font-semibold mb-1", config.color)}>최종 검증 점수</span>
+                                  <span className="text-2xl font-bold text-[#171A1F] leading-none">{score}<span className="text-sm font-medium text-[#737983] ml-0.5">점</span></span>
+                                </div>
+                                <div className={cn("text-sm font-bold px-3 py-1 rounded-full", config.bgColor, config.color, "mix-blend-multiply opacity-90")}>
+                                  {config.label}
+                                </div>
+                              </div>
+                            )
+                          })()}
+                        </>
                       )
                     })()}
 

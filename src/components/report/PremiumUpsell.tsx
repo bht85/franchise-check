@@ -106,7 +106,7 @@ export default function PremiumUpsell({ sessionId }: Props) {
                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-lg shadow-blue-900/50"
               >
                 <Lock size={18} />
-                29,000원에 잠금해제
+                5,000원에 잠금해제
               </Link>
               <p className="text-center text-xs text-gray-500 mt-4">
                 결제 후 서류를 업로드하여 정밀 분석을 시작합니다.

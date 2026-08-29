@@ -74,8 +74,8 @@ export default async function ReportPage({ params }: Props) {
           </div>
           <p className="font-semibold text-[#171A1F] mb-2">리포트가 아직 없습니다</p>
           <p className="text-sm text-[#737983] mb-6">설문을 완료하면 자동으로 생성됩니다.</p>
-          <Link href={`/session/${sessionId}/survey`} className="block w-full bg-indigo-600 text-white py-3 rounded-2xl text-sm font-semibold hover:bg-indigo-700 transition-colors">
-            설문 계속하기
+          <Link href={`/session/${sessionId}`} className="block w-full bg-indigo-600 text-white py-3 rounded-2xl text-sm font-semibold hover:bg-indigo-700 transition-colors">
+            카테고리 허브로 가기
           </Link>
         </div>
       </div>
@@ -302,7 +302,7 @@ export default async function ReportPage({ params }: Props) {
         <div className="flex gap-3">
           <ShareButton shareUrl={shareUrl} />
           <Link
-            href={`/session/${sessionId}/survey`}
+            href={`/session/${sessionId}`}
             className="flex-1 bg-indigo-600 text-white font-semibold py-3.5 rounded-2xl hover:bg-indigo-700 flex items-center justify-center gap-2 text-sm transition-colors"
           >
             <FileText size={16} />
