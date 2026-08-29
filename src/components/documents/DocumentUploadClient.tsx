@@ -112,11 +112,24 @@ export default function DocumentUploadClient({ sessionId, remainingCount = 5, ex
       <div className="mb-5">
         <h1 className="text-2xl font-bold text-gray-900 flex items-center justify-between">
           <span>문서 업로드</span>
-          <span className="text-[10px] bg-gray-900 text-white px-2 py-1 rounded tracking-wider align-middle">PREMIUM</span>
+          <span className="text-sm font-semibold bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+            리포트 갱신 횟수: {remainingCount}/5
+          </span>
         </h1>
-        <p className="text-gray-500 text-sm mt-1 leading-relaxed">
-          관련 정보를 업로드하면 더욱 정확한 프리미엄 리포트를 생성할 수 있습니다.
+        <p className="text-gray-500 mt-2 text-sm">
+          본사로부터 받은 문서를 업로드하시면, 설문으로 파악하기 힘든 독소조항과 숨은 비용을 AI가 찾아냅니다.
         </p>
+
+        {/* ── 🛡️ 보안 신뢰성 뱃지 ── */}
+        <div className="mt-4 bg-green-50/50 border border-green-100 rounded-xl p-3 flex items-start gap-2">
+          <CheckCircle2 className="text-green-600 shrink-0 mt-0.5" size={16} />
+          <div>
+            <p className="text-xs font-bold text-green-900 mb-0.5">철저한 기밀 유지 및 AI 학습 방지</p>
+            <p className="text-[11px] text-green-800 leading-tight">
+              업로드하신 계약서와 영업 정보는 암호화되어 전송되며, <strong>AI 모델 학습에 절대 사용되지 않습니다. (Zero Data Retention)</strong> 분석이 완료된 후 문서는 안전하게 즉시 파기됩니다.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="bg-gray-900 text-white rounded-xl p-4 mb-6 relative overflow-hidden shadow-sm">

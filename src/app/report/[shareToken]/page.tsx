@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { createSupabaseAdminClient } from '@/lib/supabase/admin'
 import {
   VERDICT_CONFIG,
   SCORE_LEVEL_CONFIG,
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default async function SharedReportPage({ params }: Props) {
-  const supabase = await createSupabaseServerClient()
+  const supabase = createSupabaseAdminClient()
   const { shareToken } = await params
 
   const { data: report } = await supabase
