@@ -99,7 +99,7 @@ export default async function ReportPage({ params }: Props) {
   const readinessScore = riskResult?.readiness_score ?? 0
 
   return (
-    <div className="min-h-screen bg-[#F6F7F9]">
+    <div className="min-h-screen bg-[#F6F7F9] print:bg-white print:max-w-none">
       
       {/* ── 프리미엄 뷰 ── */}
       {isPremiumCompleted && (
@@ -307,7 +307,7 @@ export default async function ReportPage({ params }: Props) {
         </div>
 
         {/* ── 액션 버튼 ── */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 print:hidden">
           <ShareButton shareUrl={shareUrl} />
           <Link
             href={`/session/${sessionId}`}
@@ -319,7 +319,7 @@ export default async function ReportPage({ params }: Props) {
         </div>
         <Link
           href="/dashboard"
-          className="w-full bg-white border border-[#E5E7EB] text-[#737983] font-semibold py-3.5 rounded-2xl hover:border-indigo-300 hover:text-indigo-600 flex items-center justify-center gap-2 text-sm transition-colors"
+          className="w-full bg-white border border-[#E5E7EB] text-[#737983] font-semibold py-3.5 rounded-2xl hover:border-indigo-300 hover:text-indigo-600 flex items-center justify-center gap-2 text-sm transition-colors print:hidden"
         >
           <Home size={16} />
           대시보드로 돌아가기

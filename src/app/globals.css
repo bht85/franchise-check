@@ -50,3 +50,16 @@ input[type="number"]::-webkit-outer-spin-button {
 .safe-area-bottom {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+@media print {
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: white !important;
+  }
+  
+  /* Remove shadows for cleaner print */
+  * {
+    box-shadow: none !important;
+  }
+}
