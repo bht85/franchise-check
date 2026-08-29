@@ -84,6 +84,7 @@ export default function QuestionCard({
   const [localState, setLocalState] = useState<AnswerState>(
     currentAnswer?.answer_state ?? 'not_checked'
   )
+  const [hasInteracted, setHasInteracted] = useState(false)
 
   // Enter 키로 다음 이동
   useEffect(() => {
@@ -100,6 +101,7 @@ export default function QuestionCard({
   }, [onNext, question.answer_type])
 
   const handleValueChange = (v: string) => {
+    setHasInteracted(true)
     setLocalValue(v)
     const val = question.answer_type === 'amount' ? Number(v) || null : v
     onAnswer(val, v ? 'confirmed' : 'not_checked')
@@ -107,6 +109,7 @@ export default function QuestionCard({
   }
 
   const handleStateChange = (s: AnswerState) => {
+    setHasInteracted(true)
     setLocalState(s)
     onAnswer(localValue || null, s)
   }
@@ -117,7 +120,12 @@ export default function QuestionCard({
     onAnswer(v, 'confirmed')
   }
 
-  const isAnswered = localState === 'confirmed' || (localValue && localValue.length > 0)
+  const isAnswered = 
+    localState === 'confirmed' || 
+    localState === 'unknown' || 
+    hasInteracted || 
+    currentAnswer !== undefined || 
+    (localValue && localValue.length > 0)
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F6F7F9]">
