@@ -426,6 +426,7 @@ export const SEED_QUESTIONS: SeedQuestion[] = [
     risk_weight: 2.5,
     missing_weight: 2.0,
     source_type: null,
+    is_active: false,
     options: [],
     conditions: [],
   },
