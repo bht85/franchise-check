@@ -14,13 +14,23 @@ export async function GET(request: Request) {
   const supabase = await createSupabaseServerClient()
   
   // 가상 결제 완료 처리
-  await supabase
+  const { data, error } = await supabase
     .from('brand_sessions')
     .update({ 
-      is_premium: true,
-      status: 'premium_uploading'
+      is_premium: true
     })
     .eq('id', sessionId)
+    .select()
+
+  if (error) {
+    console.error('[checkout] Error updating session:', error)
+    return NextResponse.json({ error: 'Failed to update session' }, { status: 500 })
+  }
+  
+  if (!data || data.length === 0) {
+    console.error('[checkout] Session not found or RLS blocked update for sessionId:', sessionId)
+    return NextResponse.json({ error: 'Session not found or permission denied' }, { status: 403 })
+  }
 
   const host = request.headers.get('x-forwarded-host') || request.headers.get('host')
   const protocol = request.headers.get('x-forwarded-proto') || 'https'

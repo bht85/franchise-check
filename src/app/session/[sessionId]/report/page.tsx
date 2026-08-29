@@ -57,7 +57,7 @@ export default async function ReportPage({ params }: Props) {
 
   if (!session) notFound()
 
-  const isPremiumCompleted = session.status === 'premium_completed'
+  const isPremiumCompleted = session.is_premium === true
 
   const { data: report } = await supabase
     .from('reports')
