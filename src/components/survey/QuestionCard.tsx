@@ -19,40 +19,6 @@ interface QuestionCardProps {
   progress: { current: number; total: number; percentage: number; stepLabel: string }
 }
 
-// ── 답변 상태 선택기 ────────────────────────────────────
-function AnswerStateSelector({
-  state,
-  onChange,
-}: {
-  state: AnswerState
-  onChange: (s: AnswerState) => void
-}) {
-  const options: Array<{ value: AnswerState; label: string; active: string }> = [
-    { value: 'confirmed', label: '확인함', active: 'border-green-500 bg-green-50 text-green-700' },
-    { value: 'unknown', label: '모름', active: 'border-amber-500 bg-amber-50 text-amber-700' },
-    { value: 'not_checked', label: '미확인', active: 'border-[#E5E7EB] bg-gray-100 text-[#737983]' },
-  ]
-
-  return (
-    <div className="flex gap-2 mt-5">
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          onClick={() => onChange(opt.value)}
-          className={cn(
-            'flex-1 text-xs font-medium py-2 rounded-full border transition-all',
-            state === opt.value
-              ? opt.active
-              : 'border-[#E5E7EB] text-[#737983] hover:border-gray-300'
-          )}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  )
-}
-
 // ── 관련 외부 링크 매핑 ────────────────────────────────
 const CONTEXTUAL_LINKS: Record<string, { title: string; url: string }> = {
   has_disclosure_doc: { title: '공정거래위원회 가맹사업정보제공시스템', url: 'https://franchise.ftc.go.kr/' },
@@ -168,7 +134,6 @@ export default function QuestionCard({
                     onClick={() => handleSelectChange(opt.option_key)}
                   />
                 ))}
-                <AnswerStateSelector state={localState} onChange={handleStateChange} />
               </div>
             )}
             {question.answer_type === 'text' && (
@@ -182,20 +147,11 @@ export default function QuestionCard({
                 />
               </div>
             )}
-
-            {(question.answer_type === 'amount' || question.answer_type === 'text') && (
-              <p className="text-[13px] text-[#737983] mt-4">
-                * 모르시거나 아직 확인 전이라면 비워두고 다음으로 넘어가셔도 됩니다.
-              </p>
-            )}
           </div>
 
-          {/* 선택 항목 표시 */}
-          {!question.is_required && question.answer_type === 'select' && (
-            <p className="text-xs text-[#737983] mb-5">
-              선택 항목 — 모르면 건너뛰어도 됩니다
-            </p>
-          )}
+          <p className="text-[13px] text-[#737983] mb-6 ml-1">
+            * 모르시거나 아직 확인 전이라면 비워두고 다음으로 넘어가셔도 됩니다.
+          </p>
 
           {/* 왜 중요한가요? (항상 표시) */}
           {question.description && (
