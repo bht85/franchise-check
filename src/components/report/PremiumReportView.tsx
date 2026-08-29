@@ -11,15 +11,15 @@ export default function PremiumReportView({ brandName }: { brandName: string }) 
         
         <div className="flex items-center gap-3 mb-4 relative z-10">
           <span className="bg-blue-500 text-white text-[10px] font-black px-2.5 py-1 rounded-sm tracking-widest">PREMIUM</span>
-          <span className="text-gray-400 text-sm font-semibold tracking-wide">AI 서류 정밀 분석 리포트</span>
+          <span className="text-white/60 text-sm font-semibold tracking-wide">AI 서류 정밀 분석 리포트</span>
         </div>
         
         <h1 className="text-2xl font-black mb-2 relative z-10 leading-snug">
-          {brandName} <span className="text-gray-300">계약서 및 정보공개서</span><br />
+          {brandName} <span className="text-white/80">계약서 및 정보공개서</span><br />
           법률 리스크 스캔 결과
         </h1>
         
-        <p className="text-gray-400 text-sm mb-6 max-w-[90%] relative z-10">
+        <p className="text-white/60 text-sm mb-6 max-w-[90%] relative z-10">
           총 142개 조항을 스캔하여 독소조항 및 본사 구두 설명과의 불일치 항목을 찾아냈습니다.
         </p>
 
@@ -56,7 +56,7 @@ export default function PremiumReportView({ brandName }: { brandName: string }) 
               <div className="flex-1 bg-gray-50 rounded-xl p-4 border border-gray-200 relative">
                 <p className="text-xs text-gray-500 font-bold mb-1">본사 안내 (설문 답변)</p>
                 <p className="text-gray-900 font-medium">"우리는 로열티가 전혀 없습니다."</p>
-                <div className="absolute top-1/2 -right-3 -trangray-y-1/2 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center shadow-sm z-10 text-gray-400 font-bold text-xs">VS</div>
+                <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 bg-white rounded-full border border-gray-200 flex items-center justify-center shadow-sm z-10 text-gray-400 font-bold text-xs">VS</div>
               </div>
               <div className="flex-1 bg-red-50/50 rounded-xl p-4 border border-red-100">
                 <p className="text-xs text-red-500 font-bold mb-1">실제 문서 발견 조항</p>
@@ -64,11 +64,11 @@ export default function PremiumReportView({ brandName }: { brandName: string }) 
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-xl p-4 relative">
-              <p className="text-xs text-gray-400 mb-2 font-bold flex items-center gap-2">
+            <div className="bg-gray-900 rounded-xl p-4 relative text-white">
+              <p className="text-xs text-white/60 mb-2 font-bold flex items-center gap-2">
                 <FileText size={14} /> 가맹계약서 원문 발췌 (14페이지)
               </p>
-              <p className="text-gray-200 text-sm leading-relaxed font-mono">
+              <p className="text-white/90 text-sm leading-relaxed font-mono">
                 제8조 (로열티 및 광고분담금)<br/>
                 ① 가맹점사업자는 본사 브랜드 사용 및 경영지원의 대가로 <span className="bg-red-500/30 text-red-200 px-1 rounded">매월 총매출액의 3%</span>를 익월 10일까지 가맹본부에 납부하여야 한다.
               </p>
@@ -86,11 +86,11 @@ export default function PremiumReportView({ brandName }: { brandName: string }) 
             <span className="text-xs text-amber-500 font-medium">정보공개서 스캔됨</span>
           </div>
           <div className="p-5">
-            <div className="bg-gray-900 rounded-xl p-4 relative mb-4">
-              <p className="text-xs text-gray-400 mb-2 font-bold flex items-center gap-2">
+            <div className="bg-gray-900 rounded-xl p-4 relative mb-4 text-white">
+              <p className="text-xs text-white/60 mb-2 font-bold flex items-center gap-2">
                 <FileText size={14} /> 정보공개서 원문 발췌 (28페이지)
               </p>
-              <p className="text-gray-200 text-sm leading-relaxed font-mono">
+              <p className="text-white/90 text-sm leading-relaxed font-mono">
                 제14조 (중도해지 시 위약금)<br/>
                 가맹점의 귀책사유로 계약이 중도 해지될 경우, <span className="bg-amber-500/30 text-amber-200 px-1 rounded">잔여 계약기간 동안 발생할 예상 로열티의 50%</span>를 위약금으로 지급한다.
               </p>
