@@ -22,14 +22,25 @@ async function getLatestNews(brandName: string) {
     const itemRegex = /<item>[\s\S]*?<title>(.*?)<\/title>[\s\S]*?<link>(.*?)<\/link>[\s\S]*?<pubDate>(.*?)<\/pubDate>/g
     
     let match
-    let count = 0
-    while ((match = itemRegex.exec(text)) !== null && count < 3) {
-      items.push({
-        title: match[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/ - .*$/, ''),
-        link: match[2],
-        date: new Date(match[3]).toLocaleDateString('ko-KR')
-      })
-      count++
+    const seenWords = new Set<string>()
+
+    while ((match = itemRegex.exec(text)) !== null && items.length < 3) {
+      const title = match[1].replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/ - .*$/, '')
+      const link = match[2]
+      
+      // 중복 기사 필터링 (단어 유사도 기반)
+      const words = title.split(/\s+/).filter(w => w.length > 1)
+      const overlap = words.filter(w => seenWords.has(w)).length
+      if (words.length > 0 && (overlap / words.length) > 0.4) {
+        continue // 유사한 제목 패스
+      }
+      words.forEach(w => seenWords.add(w))
+
+      // 고정된 YYYY-MM-DD 포맷 (Hydration mismatch 방지)
+      const d = new Date(match[3])
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
+      items.push({ title, link, date: dateStr })
     }
     return items
   } catch (e) {

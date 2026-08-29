@@ -297,10 +297,10 @@ export default function CategoryHubClient({
                   rel="noopener noreferrer"
                   className="flex flex-col gap-1 p-3 rounded-xl bg-[#F6F7F9] hover:bg-[#EFF1F4] transition-colors"
                 >
-                  <p className="text-sm font-medium text-[#171A1F] leading-snug line-clamp-2">
+                  <div className="text-sm font-medium text-[#171A1F] leading-snug line-clamp-2">
                     {news.title}
-                  </p>
-                  <p className="text-[11px] text-[#737983]">{news.date}</p>
+                  </div>
+                  <div className="text-[11px] text-[#737983]">{news.date}</div>
                 </a>
               ))}
             </div>
