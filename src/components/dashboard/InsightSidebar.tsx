@@ -57,7 +57,7 @@ async function getLatestNews(): Promise<NewsItem[]> {
     const existingTitles: string[] = []
 
     for (const item of items) {
-      if (result.length >= 4) break // 4개 찰 때까지 반복
+      if (result.length >= 3) break // 3개 찰 때까지 반복
       
       const title = item.title || ''
       if (!isDuplicate(title, existingTitles)) {
