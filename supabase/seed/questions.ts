@@ -38,7 +38,7 @@ export const SEED_QUESTIONS: SeedQuestion[] = [
     category: 'situation',
     step_number: 1,
     order_in_step: 1,
-    question_text: '이번 창업에 사용할 수 있는 자기자본은 얼마인가요?',
+    question_text: '이번 창업에 사용할 수 있는 자기자본은 얼마인가요?\n*대출금을 제외한 현재 자신이 보유할 수 있는 현금 최대',
     description: '자기자본 규모는 대출 필요성과 전체 재무 부담도를 계산하는 핵심 기준입니다. 초기 투자비용과 비교해 얼마나 안전한지 판단합니다.',
     answer_type: 'amount',
     is_required: true,

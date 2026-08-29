@@ -2,7 +2,7 @@
 INSERT INTO public.questions (
   question_key, category, step_number, order_in_step, question_text, description, answer_type, is_required, risk_weight, missing_weight, is_active
 ) VALUES (
-  'own_capital', 'situation', 1, 1, '이번 창업에 사용할 수 있는 자기자본은 얼마인가요?', '자기자본 규모는 대출 필요성과 전체 재무 부담도를 계산하는 핵심 기준입니다. 초기 투자비용과 비교해 얼마나 안전한지 판단합니다.', 'amount', true, 4.5, 4, true
+  'own_capital', 'situation', 1, 1, '이번 창업에 사용할 수 있는 자기자본은 얼마인가요?\n*대출금을 제외한 현재 자신이 보유할 수 있는 현금 최대', '자기자본 규모는 대출 필요성과 전체 재무 부담도를 계산하는 핵심 기준입니다. 초기 투자비용과 비교해 얼마나 안전한지 판단합니다.', 'amount', true, 4.5, 4, true
 ) ON CONFLICT (question_key) DO UPDATE SET
   category = EXCLUDED.category,
   step_number = EXCLUDED.step_number,

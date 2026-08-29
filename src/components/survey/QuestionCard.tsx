@@ -133,8 +133,15 @@ export default function QuestionCard({
       <div className="flex-1 flex items-start justify-center px-4 py-8 md:py-14">
         <div className="w-full max-w-2xl bg-white rounded-3xl shadow-sm border border-[#E5E7EB] p-8 md:p-12">
           {/* 질문 텍스트 */}
-          <h2 className="text-2xl md:text-3xl font-bold text-[#171A1F] leading-snug mb-8 mt-2">
-            {question.question_text}
+          <h2 className="text-2xl md:text-3xl font-bold text-[#171A1F] leading-snug mb-8 mt-2 break-keep">
+            {question.question_text.split('\n').map((line, i) => (
+              <span 
+                key={i} 
+                className={i > 0 ? "block text-base font-medium text-red-500 mt-2" : ""}
+              >
+                {line}
+              </span>
+            ))}
           </h2>
 
           {/* 답변 입력 영역 */}
