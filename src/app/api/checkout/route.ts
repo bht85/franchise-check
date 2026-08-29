@@ -20,6 +20,10 @@ export async function GET(request: Request) {
     })
     .eq('id', sessionId)
 
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host')
+  const protocol = request.headers.get('x-forwarded-proto') || 'https'
+  const baseUrl = `${protocol}://${host}`
+  
   // 결제 완료 후 문서 업로드 화면으로 이동
-  return NextResponse.redirect(new URL(`/session/${sessionId}/upload`, request.url))
+  return NextResponse.redirect(new URL(`/session/${sessionId}/upload`, baseUrl))
 }
