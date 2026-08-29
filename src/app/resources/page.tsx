@@ -1,4 +1,3 @@
-export const runtime = 'edge'
 import Link from 'next/link'
 import { ArrowLeft, ExternalLink, Search, Building2, Landmark, Store } from 'lucide-react'
 
