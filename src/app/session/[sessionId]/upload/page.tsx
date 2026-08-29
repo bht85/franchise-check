@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import DocumentUploadClient from '@/components/documents/DocumentUploadClient'
 
+export const dynamic = 'force-dynamic'
+
 interface Props {
   params: Promise<{ sessionId: string }>
 }
