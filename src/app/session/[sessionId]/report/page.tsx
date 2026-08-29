@@ -12,6 +12,7 @@ import { AlertTriangle, CheckCircle2, HelpCircle, FileText, Home } from 'lucide-
 import { TEST_USER_ID } from '@/lib/utils'
 import ShareButton from '@/components/report/ShareButton'
 import PremiumUpsell from '@/components/report/PremiumUpsell'
+import PremiumReportView from '@/components/report/PremiumReportView'
 import { CopyButton } from '@/components/report/CopyButton'
 
 interface Props {
@@ -99,6 +100,13 @@ export default async function ReportPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#F6F7F9]">
+      
+      {/* ── 프리미엄 뷰 ── */}
+      {isPremiumCompleted && (
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-2">
+          <PremiumReportView brandName={reportData.brand?.brand_name || '브랜드'} />
+        </div>
+      )}
 
       {/* ── Hero Section ── */}
       <div className="bg-white border-b border-[#E5E7EB]">
