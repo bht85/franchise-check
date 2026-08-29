@@ -122,8 +122,8 @@ export async function POST(req: NextRequest) {
     }
 
     if (error || !report) {
-      console.error('Report upsert error:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Report save error:', error || 'No report returned')
+      return NextResponse.json({ error: error?.message || '리포트 저장 실패' }, { status: 500 })
     }
 
     // 상태 업데이트 (진행률이 100%일 때만 최종 완료 처리, 아닐 경우 계속 진행 중 상태 유지)
