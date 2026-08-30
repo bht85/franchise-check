@@ -32,8 +32,11 @@ export default function LoginPage() {
       {/* 왼쪽 패널 (데스크탑 전용) */}
       <div className="hidden md:flex md:w-1/2 bg-indigo-600 flex-col justify-between p-12 text-white">
         <div>
-          <span className="font-bold text-xl">가맹검증</span>
-          <h2 className="text-4xl font-black leading-tight mt-12 mb-6">
+          <div className="flex items-center gap-2 mb-12">
+            <img src="/logo.jpg" alt="FC Check 로고" className="w-10 h-10 rounded-xl object-cover shadow-sm" />
+            <span className="font-bold text-xl">가맹검증</span>
+          </div>
+          <h2 className="text-4xl font-black leading-tight mb-6">
             계약하기 전에,<br />한 번만 더<br />확인하세요.
           </h2>
           <p className="text-indigo-200 text-lg leading-relaxed">

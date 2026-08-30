@@ -8,6 +8,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#E5E7EB] px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="FC Check 로고" className="w-8 h-8 rounded-lg object-cover" />
             <span className="font-bold text-[#171A1F] text-lg">가맹검증</span>
             <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">베타</span>
           </div>
