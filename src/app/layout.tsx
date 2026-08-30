@@ -9,8 +9,6 @@ const notoSansKR = Noto_Sans_KR({
   display: 'swap',
 })
 
-export const runtime = 'edge'
-
 export const metadata: Metadata = {
   title: '가맹검증 — 프랜차이즈 계약 전 실사 플랫폼',
   description:
