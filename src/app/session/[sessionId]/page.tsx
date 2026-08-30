@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
 
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation"
+import { QuestionEngine } from "@/lib/question-engine"
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import CategoryHubClient from '@/components/survey/CategoryHubClient'
 import type { Question, QuestionAnswer } from '@/types'
@@ -111,10 +112,13 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   const typedAnswers = (answers ?? []) as QuestionAnswer[]
   
   const quickCheckQuestions = typedQuestions.filter(q => q.is_quick_check)
-
   
+  // Quick Check 문항에 조건부 문항이 있을 수 있으므로 엔진을 사용해 활성 문항만 필터링
+  const engine = new QuestionEngine({ questions: quickCheckQuestions, answers: typedAnswers })
+  const activeQuickQs = engine.buildQueue()
+
   // Quick Check 문항이 아예 없는 경우는 (DB 오류나 설정 누락) 패스하도록 처리
-  const isQuickCheckCompleted = quickCheckQuestions.length === 0 || quickCheckQuestions.every(q => {
+  const isQuickCheckCompleted = activeQuickQs.length === 0 || activeQuickQs.every(q => {
     const a = typedAnswers.find(ans => ans.question_id === q.id)
     return a && a.answer_state !== 'not_checked'
   })
