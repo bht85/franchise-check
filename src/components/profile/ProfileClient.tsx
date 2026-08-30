@@ -47,19 +47,22 @@ export default function ProfileClient({ initialPreferences, userId }: ProfileCli
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-            보유 자금 (원)
+            보유 자금 (만원)
           </label>
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="예: 50,000,000"
-            value={preferences.own_capital ? Number(preferences.own_capital).toLocaleString() : ''}
-            onChange={(e) => {
-              const raw = e.target.value.replace(/[^0-9]/g, '')
-              handleChange('own_capital', raw)
-            }}
-            className="w-full text-right border-2 border-[#E5E7EB] rounded-xl px-4 py-3 font-semibold text-[#171A1F] focus:border-indigo-500 focus:outline-none transition-colors"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="예: 5,000"
+              value={preferences.own_capital ? Number(Math.floor(Number(preferences.own_capital) / 10000)).toLocaleString() : ''}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/[^0-9]/g, '')
+                handleChange('own_capital', raw ? String(Number(raw) * 10000) : '')
+              }}
+              className="w-full text-right border-2 border-[#E5E7EB] rounded-xl px-4 py-3 pr-12 font-semibold text-[#171A1F] focus:border-indigo-500 focus:outline-none transition-colors"
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">만원</span>
+          </div>
         </div>
 
         <div>
@@ -79,20 +82,23 @@ export default function ProfileClient({ initialPreferences, userId }: ProfileCli
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-            월 대출 상환 가능액 (원)
+            월 대출 상환 가능액 (만원)
           </label>
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="예: 1,000,000"
-            value={preferences.monthly_loan_payment ? Number(preferences.monthly_loan_payment).toLocaleString() : ''}
-            onChange={(e) => {
-              const raw = e.target.value.replace(/[^0-9]/g, '')
-              handleChange('monthly_loan_payment', raw)
-            }}
-            className="w-full text-right border-2 border-[#E5E7EB] rounded-xl px-4 py-3 font-semibold text-[#171A1F] focus:border-indigo-500 focus:outline-none transition-colors disabled:bg-gray-100 disabled:text-gray-400"
-            disabled={preferences.use_loan === 'false'}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="예: 100"
+              value={preferences.monthly_loan_payment ? Number(Math.floor(Number(preferences.monthly_loan_payment) / 10000)).toLocaleString() : ''}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/[^0-9]/g, '')
+                handleChange('monthly_loan_payment', raw ? String(Number(raw) * 10000) : '')
+              }}
+              className="w-full text-right border-2 border-[#E5E7EB] rounded-xl px-4 py-3 pr-12 font-semibold text-[#171A1F] focus:border-indigo-500 focus:outline-none transition-colors disabled:bg-gray-100 disabled:text-gray-400"
+              disabled={preferences.use_loan === 'false'}
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">만원</span>
+          </div>
         </div>
       </div>
 
