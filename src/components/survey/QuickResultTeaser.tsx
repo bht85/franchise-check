@@ -2,6 +2,7 @@
 
 import { AlertTriangle, ArrowDown } from 'lucide-react'
 import type { Question, QuestionAnswer } from '@/types'
+import { QuestionEngine } from '@/lib/question-engine'
 
 interface Props {
   questions: Question[]
@@ -11,11 +12,13 @@ interface Props {
 export default function QuickResultTeaser({ questions, answers }: Props) {
   // 간단한 Readiness Score 계산
   const quickQuestions = questions.filter(q => q.is_quick_check)
+  const engine = new QuestionEngine({ questions: quickQuestions, answers })
+  const activeQuickQs = engine.buildQueue()
   
   let totalWeight = 0
   let scoreWeight = 0
 
-  quickQuestions.forEach(q => {
+  activeQuickQs.forEach(q => {
     totalWeight += q.risk_weight
     const a = answers.find(ans => ans.question_id === q.id)
     if (a && a.answer_state === 'confirmed') {
