@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { Question, QuestionAnswer } from '@/types'
 import { QuestionEngine } from '@/lib/question-engine'
+import QuickResultTeaser from '@/components/survey/QuickResultTeaser'
 
 // ── 카테고리 설정 ──────────────────────────────────────────────
 const CATEGORIES = [
@@ -39,6 +40,7 @@ interface Props {
   initialAnswers: QuestionAnswer[]
   justCompletedStep: number | null
   latestNews?: NewsItem[]
+  showTeaser?: boolean
 }
 
 export default function CategoryHubClient({
@@ -49,6 +51,7 @@ export default function CategoryHubClient({
   initialAnswers,
   justCompletedStep,
   latestNews,
+  showTeaser,
 }: Props) {
   const router = useRouter()
   const [isReportLoading, setIsReportLoading] = useState(false)
@@ -170,6 +173,11 @@ export default function CategoryHubClient({
           <h1 className="text-2xl font-bold text-[#171A1F] leading-tight">{brandName}</h1>
           <p className="text-sm text-[#737983] mt-0.5">{hqName}</p>
         </div>
+
+        {/* ── Quick Check 완료 미끼 ── */}
+        {showTeaser && (
+          <QuickResultTeaser questions={initialQuestions} answers={initialAnswers} />
+        )}
 
         {/* ── 완료 배너 ────────────────────────────────────── */}
         {justCompletedCategory && showBanner && (

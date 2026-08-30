@@ -116,6 +116,7 @@ export interface Question {
   missing_weight: number        // "모름" 시 추가 가중치 (0~5)
   source_type: SourceType | null
   is_active: boolean
+  is_quick_check: boolean
   created_at: string
   options?: QuestionOption[]
   conditions?: QuestionCondition[]

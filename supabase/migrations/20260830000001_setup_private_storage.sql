@@ -4,7 +4,7 @@ VALUES ('documents', 'documents', false)
 ON CONFLICT (id) DO UPDATE SET public = false;
 
 -- 2. Enable RLS on storage.objects
-ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
 
 -- 3. Policy: Allow users to upload to their own user folder (userId/sessionId/filename)
 DROP POLICY IF EXISTS "Users can upload their own documents" ON storage.objects;

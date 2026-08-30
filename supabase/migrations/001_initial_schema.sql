@@ -125,6 +125,7 @@ CREATE TABLE questions (
   missing_weight  NUMERIC NOT NULL DEFAULT 1.0 CHECK (missing_weight BETWEEN 0 AND 5),
   source_type     source_type,
   is_active       BOOLEAN NOT NULL DEFAULT TRUE,
+  is_quick_check  BOOLEAN NOT NULL DEFAULT FALSE,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 

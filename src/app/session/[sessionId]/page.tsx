@@ -5,7 +5,7 @@ import type { Question, QuestionAnswer } from '@/types'
 
 interface Props {
   params: Promise<{ sessionId: string }>
-  searchParams: Promise<{ completed?: string }>
+  searchParams: Promise<{ completed?: string, quick?: string }>
 }
 
 const HUB_STEPS = [1, 3, 4, 5, 6, 7]
@@ -102,15 +102,32 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   const justCompletedStep = completed ? parseInt(completed, 10) : null
   const latestNews = await getLatestNews(brand?.brand_name ?? '')
 
+  // Quick Check 완료 여부 확인
+  const typedQuestions = (questions ?? []) as Question[]
+  const typedAnswers = (answers ?? []) as QuestionAnswer[]
+  
+  const quickCheckQuestions = typedQuestions.filter(q => q.is_quick_check)
+  const isQuickCheckCompleted = quickCheckQuestions.length > 0 && quickCheckQuestions.every(q => {
+    const a = typedAnswers.find(ans => ans.question_id === q.id)
+    return a && a.answer_state !== 'not_checked'
+  })
+
+  // 'quick=done' 파라미터가 없고, Quick Check를 아직 다 안 풀었다면 Quick Check 화면으로 이동
+  const { quick } = await searchParams
+  if (!isQuickCheckCompleted && quick !== 'done') {
+    redirect(`/session/${sessionId}/quick`)
+  }
+
   return (
     <CategoryHubClient
       sessionId={sessionId}
       brandName={brand?.brand_name ?? ''}
       hqName={brand?.hq_name ?? ''}
-      initialQuestions={(questions ?? []) as Question[]}
-      initialAnswers={(answers ?? []) as QuestionAnswer[]}
+      initialQuestions={typedQuestions}
+      initialAnswers={typedAnswers}
       justCompletedStep={Number.isNaN(justCompletedStep) ? null : justCompletedStep}
       latestNews={latestNews}
+      showTeaser={quick === 'done'}
     />
   )
 }

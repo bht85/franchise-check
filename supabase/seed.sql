@@ -1815,3 +1815,19 @@ INSERT INTO public.question_conditions (
 SELECT q1.id, q2.id, 'yes'
 FROM public.questions q1, public.questions q2
 WHERE q1.question_key = 'owner_hq_dispute' AND q2.question_key = 'actual_owner_contacted';
+
+-- 2-Stage Funnel (Quick Check) 문항 지정
+UPDATE public.questions
+SET is_quick_check = true
+WHERE question_key IN (
+  'own_capital',
+  'hq_sales_doc_received',
+  'monthly_rent_estimated',
+  'territory_in_contract',
+  'royalty_confirmed',
+  'required_purchase_exists',
+  'contract_term',
+  'early_termination',
+  'early_termination_penalty',
+  'supervisor_system'
+);
