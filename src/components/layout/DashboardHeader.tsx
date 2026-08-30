@@ -35,9 +35,13 @@ export default function DashboardHeader({ sessionCount = 0, isPremium = false }:
     <>
       <header className="bg-white border-b border-[#E5E7EB] px-6 py-4 sticky top-0 z-50">
         <div className="flex justify-between items-center max-w-3xl mx-auto">
-          <Link href="/dashboard" className="text-lg font-bold text-[#171A1F]">
-            가맹검증
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="FC Check 로고" className="w-8 h-8 rounded-lg object-cover" />
+            <span className="text-xl font-bold text-gray-900 tracking-tight">
+              가맹검증
+            </span>
           </Link>
+          
           <div className="flex items-center gap-2">
             <Link
               href="/session/new"
