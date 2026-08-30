@@ -111,7 +111,6 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   const typedAnswers = (answers ?? []) as QuestionAnswer[]
   
   const quickCheckQuestions = typedQuestions.filter(q => q.is_quick_check)
-  console.error("[DEBUG-HUB] typedQuestions count:", typedQuestions.length, "quickCheck count:", quickCheckQuestions.length, "first q is_quick_check:", typedQuestions[0]?.is_quick_check)
 
   
   // Quick Check 문항이 아예 없는 경우는 (DB 오류나 설정 누락) 패스하도록 처리
