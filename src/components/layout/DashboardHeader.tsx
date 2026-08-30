@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Plus, UserCircle, LogOut } from 'lucide-react'
@@ -15,6 +15,16 @@ export default function DashboardHeader({ sessionCount = 0, isPremium = false }:
   const router = useRouter()
   const supabase = createSupabaseBrowserClient()
   const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        const url = user.user_metadata?.avatar_url || user.user_metadata?.picture
+        if (url) setAvatarUrl(url)
+      }
+    })
+  }, [supabase])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -52,10 +62,14 @@ export default function DashboardHeader({ sessionCount = 0, isPremium = false }:
             </Link>
             <Link
               href="/profile"
-              className="w-9 h-9 bg-[#F6F7F9] rounded-xl flex items-center justify-center text-[#737983] hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+              className="w-9 h-9 bg-[#F6F7F9] rounded-xl flex items-center justify-center text-[#737983] hover:text-indigo-600 hover:bg-indigo-50 transition-colors overflow-hidden"
               title="내 정보"
             >
-              <UserCircle size={20} />
+              {avatarUrl ? (
+                <img src={avatarUrl} alt="프로필" className="w-full h-full object-cover" />
+              ) : (
+                <UserCircle size={20} />
+              )}
             </Link>
             <button
               onClick={handleLogout}
