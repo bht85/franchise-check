@@ -12,7 +12,9 @@ interface Props {
 export default function QuickResultTeaser({ questions, answers }: Props) {
   // 간단한 Readiness Score 계산
   const quickQuestions = questions.filter(q => q.is_quick_check)
-  const engine = new QuestionEngine({ questions: quickQuestions, answers })
+  const answersMap: Record<string, any> = {}
+  answers.forEach(a => { answersMap[a.question_id] = a })
+  const engine = new QuestionEngine({ questions: quickQuestions, answers: answersMap })
   const activeQuickQs = engine.buildQueue()
   
   let totalWeight = 0

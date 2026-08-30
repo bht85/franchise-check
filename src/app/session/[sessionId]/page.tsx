@@ -114,7 +114,9 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   const quickCheckQuestions = typedQuestions.filter(q => q.is_quick_check)
   
   // Quick Check 문항에 조건부 문항이 있을 수 있으므로 엔진을 사용해 활성 문항만 필터링
-  const engine = new QuestionEngine({ questions: quickCheckQuestions, answers: typedAnswers })
+  const answersMap: Record<string, any> = {}
+  typedAnswers.forEach(a => { answersMap[a.question_id] = a })
+  const engine = new QuestionEngine({ questions: quickCheckQuestions, answers: answersMap })
   const activeQuickQs = engine.buildQueue()
 
   // Quick Check 문항이 아예 없는 경우는 (DB 오류나 설정 누락) 패스하도록 처리
