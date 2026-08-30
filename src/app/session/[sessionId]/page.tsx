@@ -127,7 +127,6 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="fixed top-0 left-0 z-50 bg-red-500 text-white p-2 text-xs">Total Qs: {typedQuestions.length}, Quick Qs: {quickCheckQuestions.length}, First Q quick check value: {String(typedQuestions[0]?.is_quick_check)}</div>
     <CategoryHubClient
       sessionId={sessionId}
       brandName={brand?.brand_name ?? ''}
