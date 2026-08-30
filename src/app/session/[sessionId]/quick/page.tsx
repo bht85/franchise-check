@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+
 import { redirect } from 'next/navigation'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import QuickCheckClient from '@/components/survey/QuickCheckClient'
