@@ -38,17 +38,17 @@ export default async function DashboardPage() {
       <main className="max-w-5xl mx-auto px-4 md:px-6 py-10 flex flex-col md:flex-row gap-8">
         <div className="flex-1 min-w-0">
           {isAdmin && (
-            <Link href="/admin" className="block mb-6 bg-slate-900 text-white rounded-2xl p-4 flex items-center justify-between hover:bg-slate-800 transition-colors shadow-sm">
+            <Link href="/admin" className="block mb-6 bg-[#111827] text-white rounded-2xl p-4 flex items-center justify-between hover:bg-[#1f2937] transition-colors shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
                   <span className="font-bold">A</span>
                 </div>
                 <div>
                   <h3 className="font-bold text-sm">관리자 모드 활성화됨</h3>
-                  <p className="text-slate-300 text-xs mt-0.5">대시보드로 이동하여 전체 시스템 현황을 확인하세요.</p>
+                  <p className="text-gray-300 text-xs mt-0.5">대시보드로 이동하여 전체 시스템 현황을 확인하세요.</p>
                 </div>
               </div>
-              <ArrowRight size={20} className="text-slate-400" />
+              <ArrowRight size={20} className="text-gray-400" />
             </Link>
           )}
 
