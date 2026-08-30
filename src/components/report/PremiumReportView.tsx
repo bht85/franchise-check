@@ -23,7 +23,7 @@ export default function PremiumReportView({ brandName, sessionId, readinessScore
         </h1>
         
         <p className="text-white/60 text-sm mb-6 max-w-[90%] relative z-10 print:!text-white">
-          총 142개 조항을 스캔하여 독소조항 및 본사 구두 설명과의 불일치 항목을 찾아냈습니다.
+          총 142개 조항을 스캔하여 주의가 필요한 조항 및 본사 구두 설명과의 불일치 항목을 찾아냈습니다.
         </p>
 
         <div className="flex gap-3 text-sm font-medium relative z-10">
@@ -58,7 +58,7 @@ export default function PremiumReportView({ brandName, sessionId, readinessScore
               <span className="text-indigo-500 mt-0.5">•</span>
               <span>
                 현재 서류 검토 및 점검 상태를 종합한 <strong>계약 준비도는 {readinessScore}점</strong>으로, 
-                당장 계약에 서명하기엔 무리가 있습니다. 발견된 독소조항에 대해 본사와 재협상이 강력히 요구됩니다.
+                당장 계약에 서명하기엔 신중한 접근이 필요합니다. 발견된 주의 필요 조항에 대해 본사와의 명확한 기준 확인이 요구됩니다.
               </span>
             </li>
           </ul>
@@ -124,13 +124,13 @@ export default function PremiumReportView({ brandName, sessionId, readinessScore
               </p>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-3 rounded-lg border border-gray-100 print:bg-gray-50">
-              <strong className="text-amber-700">전문가 코멘트:</strong> 잔여기간 로열티의 50%는 업계 평균 대비 매우 높은 수준입니다. 장사가 안 되어 폐업할 때 수천만 원의 위약금 폭탄을 맞을 수 있는 전형적인 독소조항입니다.
+              <strong className="text-amber-700">AI 코멘트:</strong> 잔여기간 로열티의 50%는 업계 평균 대비 상대적으로 높은 수준입니다. 가맹점주에게 큰 부담이 발생할 가능성이 있어 계약 전 세부 기준 확인이 필요합니다.
             </p>
           </div>
         </div>
 
         {/* ── 실전 협상 가이드 ── */}
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 relative overflow-hidden print:break-inside-avoid print:bg-blue-50 print:border-blue-200">
+        <div className="mb-8 bg-blue-50 border border-blue-200 rounded-2xl p-6 relative overflow-hidden print:break-inside-avoid print:bg-blue-50 print:border-blue-200">
           <div className="absolute right-0 top-0 opacity-5">
             <MessageCircle size={100} />
           </div>
@@ -144,6 +144,11 @@ export default function PremiumReportView({ brandName, sessionId, readinessScore
           <div className="bg-white rounded-xl p-4 border border-blue-100 shadow-sm relative z-10 font-mono text-sm text-gray-700 whitespace-pre-wrap leading-relaxed print:shadow-none">
             "대리님, 계약서 확인해 보았는데 궁금한 점이 있어서요.&#10;분명 상담 때는 로열티가 없다고 하셨는데, 가맹계약서 14페이지 제8조에는 '월 매출 3% 납부'라고 적혀있네요. 이 조항은 삭제된 수정 계약서로 다시 보내주실 수 있나요?&#10;구두 약속은 법적 효력이 없다고 해서 확실히 짚고 넘어가려고 합니다."
           </div>
+        </div>
+
+        {/* 면책 조항 (디스클레이머) */}
+        <div className="bg-gray-100 rounded-xl p-4 text-xs text-gray-500 text-center print:bg-white print:border print:border-gray-200">
+          본 결과는 AI 기반 문서 분석 결과이며 법률적 판단 또는 법률 자문을 대체하지 않습니다. 실제 계약 체결 전 반드시 전문가의 검토를 받으시길 권장합니다.
         </div>
 
         {/* ── 액션 ── */}

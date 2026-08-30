@@ -116,8 +116,8 @@ export default function DocumentUploadClient({ sessionId, remainingCount = 5, ex
             리포트 갱신 횟수: {remainingCount}/5
           </span>
         </h1>
-        <p className="text-gray-500 mt-2 text-sm">
-          본사로부터 받은 문서를 업로드하시면, 설문으로 파악하기 힘든 독소조항과 숨은 비용을 AI가 찾아냅니다.
+        <p className="text-[#737983] mb-8 text-sm sm:text-base leading-relaxed max-w-lg mx-auto">
+          본사로부터 받은 문서를 업로드하시면, 설문으로 파악하기 힘든 주의 조항과 숨은 비용을 AI가 점검합니다.
         </p>
 
         {/* ── 🛡️ 보안 신뢰성 뱃지 ── */}

@@ -79,7 +79,7 @@ export default function PricingPage() {
               </div>
 
               <div className="flex-1 space-y-4 mb-8">
-                <FeatureItem text="AI 심층 문서 분석 (독소조항 등)" dark />
+                <FeatureItem text="AI 심층 문서 분석 (주의 조항 등)" dark />
                 <FeatureItem text="객단가 및 손익분기점 시뮬레이션" dark />
                 <FeatureItem text="상세 상권 분석 데이터 제공" dark />
                 <FeatureItem text="리포트 PDF 다운로드 및 인쇄" dark />

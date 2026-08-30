@@ -59,7 +59,7 @@ export default function PremiumUpsell({ sessionId }: Props) {
     <>
       <div onClick={() => setShowModal(true)} className="space-y-6">
         <LockedSection title="📄 정보공개서 숨은 리스크" teaser="가맹비, 인테리어 비용 등 숨은 거품이 없는지 확인하세요" />
-        <LockedSection title="⚖️ 가맹계약서 독소조항" teaser="과도한 위약금, 갱신 거절 사유 등 불리한 조항을 찾아냅니다" />
+        <LockedSection title="⚖️ 가맹계약서 주의 조항" teaser="과도한 위약금, 갱신 거절 사유 등 부담 가능성이 높은 조건들을 점검합니다" />
       </div>
 
       {showModal && (
@@ -83,7 +83,7 @@ export default function PremiumUpsell({ sessionId }: Props) {
               
               <h3 className="text-white font-bold text-xl leading-snug mb-3">
                 설문만으로는 알 수 없는<br />
-                계약서 속 <span className="text-red-400">독소조항</span>을 찾아낼까요?
+                계약서 속 <span className="text-red-400">주의 조항</span>을 찾아낼까요?
               </h3>
               
               <ul className="space-y-2.5 mb-8 mt-5">
@@ -93,7 +93,7 @@ export default function PremiumUpsell({ sessionId }: Props) {
                 </li>
                 <li className="flex items-start gap-2 text-sm text-gray-300">
                   <CheckCircle2 size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                  <span>과도한 위약금 및 <strong className="text-white">독소조항 탐지</strong></span>
+                  <span>과도한 위약금 및 <strong className="text-white">주의 필요 조건 점검</strong></span>
                 </li>
                 <li className="flex items-start gap-2 text-sm text-gray-300">
                   <CheckCircle2 size={18} className="text-blue-400 shrink-0 mt-0.5" />
