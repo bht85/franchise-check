@@ -128,12 +128,19 @@ export default function NewSessionClient() {
 
             {/* 참고사항 박스 */}
             <div className="bg-white rounded-2xl p-6 border border-[#E5E7EB]">
-              <p className="text-sm font-semibold text-[#171A1F] mb-3">시작 전 참고사항</p>
-              <ul className="text-sm text-[#737983] space-y-2">
-                <li>• 6개 카테고리를 원하는 순서로 선택할 수 있습니다.</li>
-                <li>• 모르는 항목은 &apos;모름&apos;을 선택하면 됩니다.</li>
-                <li>• 중간에 나가도 이어서 할 수 있습니다.</li>
-                <li>• 마지막에 PDF 리포트를 받을 수 있습니다.</li>
+              <p className="text-sm font-semibold text-[#171A1F] mb-3">진단 진행 안내</p>
+              <ul className="text-sm text-[#737983] space-y-3">
+                <li>
+                  <span className="font-medium text-[#171A1F]">1단계: 빠른 진단 (약 3분 소요)</span><br/>
+                  가장 핵심적인 10개 문항에 대한 퀵 체크가 먼저 진행됩니다.
+                </li>
+                <li>
+                  <span className="font-medium text-[#171A1F]">2단계: 정밀 점검</span><br/>
+                  이후 6개 카테고리로 세분화된 정밀 점검을 원하는 순서대로 진행할 수 있습니다.
+                </li>
+                <li className="pt-1 border-t border-[#F3F4F6]">
+                  • 모르는 항목은 &apos;모름&apos;을 선택하면 되며, 언제든 이어서 할 수 있습니다.
+                </li>
               </ul>
             </div>
 
@@ -156,7 +163,7 @@ export default function NewSessionClient() {
               )}
             >
               {isLoading ? '만드는 중...' : (
-                <>카테고리 허브로 시작하기 <ArrowRight size={20} /></>
+                <>빠른 진단 시작하기 <ArrowRight size={20} /></>
               )}
             </button>
           </div>
