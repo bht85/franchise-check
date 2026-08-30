@@ -39,7 +39,7 @@ export default async function SurveyPage({ params, searchParams }: Props) {
   // 전체 활성 질문 로드
   const { data: allQuestions, error: questionsError } = await supabase
     .from('questions')
-    .select('*, options:question_options(*), conditions:question_conditions!question_id(*)')
+    .select('*, is_quick_check, options:question_options(*), conditions:question_conditions!question_id(*)')
     .eq('is_active', true)
     .order('step_number')
     .order('order_in_step')

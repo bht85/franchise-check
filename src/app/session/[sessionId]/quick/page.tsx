@@ -27,7 +27,7 @@ export default async function QuickCheckPage({ params }: Props) {
   // 2. Quick Check 문항만 로드
   const { data: questions, error: questionsError } = await supabase
     .from('questions')
-    .select('*, options:question_options(*), conditions:question_conditions!question_id(*)')
+    .select('*, is_quick_check, options:question_options(*), conditions:question_conditions!question_id(*)')
     .eq('is_active', true)
     .eq('is_quick_check', true)
     .order('step_number')

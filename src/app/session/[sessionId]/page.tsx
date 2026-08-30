@@ -79,7 +79,7 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   // 허브 대상 step의 활성 질문만 로드
   const { data: questions, error: questionsError } = await supabase
     .from('questions')
-    .select('*, options:question_options(*), conditions:question_conditions!question_id(*)')
+    .select('*, is_quick_check, options:question_options(*), conditions:question_conditions!question_id(*)')
     .eq('is_active', true)
     .in('step_number', HUB_STEPS)
     .order('step_number')
