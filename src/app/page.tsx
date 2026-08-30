@@ -11,8 +11,8 @@ export default function LandingPage() {
             <span className="font-bold text-[#171A1F] text-lg">가맹검증</span>
             <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">베타</span>
           </div>
-          <Link href="/login" className="text-sm text-[#737983] hover:text-[#171A1F] transition-colors">
-            로그인
+          <Link href="/login" className="text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-full transition-colors">
+            시작하기
           </Link>
         </div>
       </header>
