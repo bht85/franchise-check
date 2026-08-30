@@ -79,14 +79,15 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   // 허브 대상 step의 활성 질문만 로드
   const { data: questions, error: questionsError } = await supabase
     .from('questions')
-    .select('*, is_quick_check, options:question_options(*), conditions:question_conditions!question_id(*)')
+    .select('*, options:question_options(*), conditions:question_conditions!question_id(*)')
     .eq('is_active', true)
     .in('step_number', HUB_STEPS)
     .order('step_number')
     .order('order_in_step')
+    .order('id')
 
   if (questionsError) {
-    console.error('[SessionHub] questions fetch error:', questionsError)
+    console.error('[SessionHub] questions fetch error:', JSON.stringify(questionsError, null, 2))
   }
 
   // 이 세션의 기존 답변 로드
