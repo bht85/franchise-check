@@ -107,7 +107,9 @@ export default async function SessionHubPage({ params, searchParams }: Props) {
   const typedAnswers = (answers ?? []) as QuestionAnswer[]
   
   const quickCheckQuestions = typedQuestions.filter(q => q.is_quick_check)
-  const isQuickCheckCompleted = quickCheckQuestions.length > 0 && quickCheckQuestions.every(q => {
+  
+  // Quick Check 문항이 아예 없는 경우는 (DB 오류나 설정 누락) 패스하도록 처리
+  const isQuickCheckCompleted = quickCheckQuestions.length === 0 || quickCheckQuestions.every(q => {
     const a = typedAnswers.find(ans => ans.question_id === q.id)
     return a && a.answer_state !== 'not_checked'
   })

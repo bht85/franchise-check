@@ -62,6 +62,9 @@ export default function QuickCheckClient({
 
       setCurrentQ(firstUnanswered)
       setCurrentQuestion(firstUnanswered.id)
+    } else if (isMounted && activeQuestions.length === 0) {
+      // 조건에 의해 활성화된 Quick Check 문항이 아예 없는 경우
+      router.replace(`/session/${sessionId}?quick=done`)
     }
   }, [isMounted, activeQuestions, answers, currentQ, setCurrentQuestion, router, sessionId])
 

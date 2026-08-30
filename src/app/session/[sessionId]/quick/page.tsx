@@ -33,9 +33,14 @@ export default async function QuickCheckPage({ params }: Props) {
     .order('step_number')
     .order('order_in_step')
 
-  if (questionsError || !questions) {
-    console.error('[QuickCheck] questions load error', questionsError)
-    redirect(`/session/${sessionId}`)
+  if (questionsError) {
+    console.error('[QuickCheck] questions load error:', questionsError)
+    redirect('/dashboard') // 에러 발생 시 대시보드로 안전하게 이동
+  }
+
+  if (!questions || questions.length === 0) {
+    // Quick Check 문항이 없는 경우 바로 패스
+    redirect(`/session/${sessionId}?quick=done`)
   }
 
   // 3. 기존 답변 로드
