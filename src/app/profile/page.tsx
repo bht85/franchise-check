@@ -37,24 +37,23 @@ export default async function ProfilePage() {
         
         {/* 계정 프로필 영역 */}
         <div className="bg-white p-6 rounded-3xl border border-[#E5E7EB] mb-8 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 pb-6 border-b border-[#E5E7EB]">
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[#E5E7EB]">
             {avatarUrl ? (
-              <img src={avatarUrl} alt="프로필" className="w-16 h-16 rounded-full object-cover border border-gray-100 shadow-sm" />
+              <img src={avatarUrl} alt="프로필" className="w-16 h-16 rounded-full object-cover border border-gray-100 shadow-sm shrink-0" />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl font-bold shadow-sm">
+              <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl font-bold shadow-sm shrink-0">
                 {name.charAt(0)}
               </div>
             )}
-            <div>
+            <div className="flex flex-col justify-center">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-bold text-[#171A1F]">{name}</h3>
                 {isKakao && (
-                  <span className="flex items-center gap-1 text-[11px] font-bold text-[#371d1e] bg-[#FEE500] px-2 py-0.5 rounded-md">
+                  <div className="flex items-center justify-center w-5 h-5 bg-[#FEE500] rounded-full text-[#371d1e] shadow-sm" title="카카오 연동 계정">
                     <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 3c-5.52 0-10 3.58-10 8 0 2.86 1.8 5.37 4.5 6.78l-1.16 4.34c-.1.38.3.7.64.5l4.13-2.76c.62.1 1.25.16 1.89.16 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
                     </svg>
-                    카카오 연동됨
-                  </span>
+                  </div>
                 )}
               </div>
               <p className="text-sm text-[#737983]">{user.email}</p>
